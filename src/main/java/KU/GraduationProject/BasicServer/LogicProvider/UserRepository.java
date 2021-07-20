@@ -13,6 +13,16 @@ public class UserRepository {
     private static final Map<Long, User> member = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
+    //singleton
+    private static final UserRepository instance = new UserRepository();
+
+    public static UserRepository getInstance() {
+        return instance;
+    }
+
+    private UserRepository() {
+    }
+
     public User SaveUser(User user){
         user.setId(++sequence);
         member.put(user.getId(),user);
@@ -32,6 +42,10 @@ public class UserRepository {
         user.setUserName(updateParameter.getUserName());
         user.setPassword(updateParameter.getPassword());
         user.setAge(updateParameter.getAge());
+    }
+
+    public void DeleteUser(Long userId){
+        member.remove(userId);
     }
 
     public void ClearUser(){

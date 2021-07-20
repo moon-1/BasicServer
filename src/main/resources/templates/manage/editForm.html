@@ -37,6 +37,10 @@
                 </button>
             </div>
             <div class="col">
+                <button class="w-100 btn btn-primary btn-lg"
+                        th:onclick="|location.href='@{/manage/users/{userId}/delete(userId=${user.id})}'|" type="button">삭제</button>
+            </div>
+            <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
                         th:onclick="|location.href='@{/manage/users/{userId}(userId=${user.id})}'|" type="button">취소</button>
             </div>

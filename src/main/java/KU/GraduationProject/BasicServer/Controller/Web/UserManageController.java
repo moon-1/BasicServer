@@ -59,6 +59,14 @@ public class UserManageController {
         return "redirect:/manage/users/{userId}";
     }
 
+    @GetMapping("/{userId}/delete")
+    public String DeleteUser(@PathVariable Long userId, Model model){
+        userRepository.DeleteUser(userId);
+        List<User> users = userRepository.SearchAll();
+        model.addAttribute("users",users);
+        return "manage/users";
+    }
+
     //Init for test
     @PostConstruct
     public void Init(){

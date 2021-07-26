@@ -20,7 +20,7 @@ public class UserRepository {
         return instance;
     }
 
-    private UserRepository() {
+    public UserRepository() {
     }
 
     public User SaveUser(User user){

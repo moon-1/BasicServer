@@ -5,11 +5,15 @@ import KU.GraduationProject.BasicServer.LogicProvider.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/manage/users")
@@ -39,12 +43,12 @@ public class UserManageController {
 
     @PostMapping("/add")
     public String AddUser(User user, RedirectAttributes redirectAttributes) {
+
         User savedUser = userRepository.SaveUser(user);
         redirectAttributes.addAttribute("userId", savedUser.getId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/manage/users/{userId}";
     }
-
 
     @GetMapping("/{userId}/edit")
     public String EditUser(@PathVariable Long userId, Model model) {

@@ -1,6 +1,6 @@
-package KU.GraduationProject.BasicServer.LogicProvider;
+package KU.GraduationProject.BasicServer.Repository;
 
-import KU.GraduationProject.BasicServer.DataModel.User;
+import KU.GraduationProject.BasicServer.Domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserRepositoryTest {
 
-    UserRepository userRepository = UserRepository.getInstance();
+    UserRepository userRepository = new UserRepository();
 
     @AfterEach
     void afterEach(){

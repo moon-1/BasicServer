@@ -1,13 +1,22 @@
-package KU.GraduationProject.BasicServer.DataModel;
+package KU.GraduationProject.BasicServer.Domain;
 
 import lombok.Data;
 
+import javax.persistence.*;
+
 @Data
+//@Entity
+//@Table(name="USER")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(length = 50, nullable = false)
     private String userName;
+    @Column
     private String password;
+    @Column
     private Integer age;
 
     public User(){ }

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-@Controller
+@RestController
 @Api("User Management API V1")
 @RequestMapping("/manage/users")
 @RequiredArgsConstructor
@@ -24,52 +24,58 @@ public class UserManageController {
 
     private final UserService userService;
 
+//    @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
+//    @GetMapping
+//    public String Users(Model model){
+//        List<User> users = userService.SearchAll();
+//        model.addAttribute("users",users);
+//        return "manage/users";
+//    }
+
     @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
     @GetMapping
-    public String Users(Model model){
-        List<User> users = userService.SearchAll();
-        model.addAttribute("users",users);
-        return "manage/users";
+    public List<User> findAll(){
+        return userService.SearchAll();
     }
 
     @ApiOperation(value = "사용자 정보", notes = "사용자에 대한 상세 정보")
     @GetMapping("/{userId}")
-    public String User(@PathVariable Long userId,Model model){
+    public User findById(@PathVariable Long userId){
         User user = userService.SearchUser(userId);
-        model.addAttribute("user",user);
-        return "manage/user";
+        return user;
     }
 
-    @GetMapping("/add")
-    public String AddUser() {
-        return "manage/addForm";
-    }
+//    @ApiOperation(value = "회원가입", notes = "새로운 사용자 추가")
+//    @GetMapping("/add")
+//    public String AddUser() {
+//        return "manage/addForm";
+//    }
 
+    @ApiOperation(value = "회원가입", notes = "새로운 사용자 추가")
     @PostMapping("/add")
-    public String AddUser(User user, RedirectAttributes redirectAttributes) {
-
+    public User AddUser(@ModelAttribute User user) {
         Long id = userService.SaveUser(user);
         User savedUser = userService.SearchUser(id);
-        redirectAttributes.addAttribute("userId", savedUser.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/manage/users/{userId}";
+        return savedUser;
     }
 
-    @GetMapping("/{userId}/edit")
-    public String EditUser(@PathVariable Long userId, Model model) {
-        User user = userService.SearchUser(userId);
-        model.addAttribute("user", user);
-        return "manage/editForm";
-    }
+//    @GetMapping("/{userId}/edit")
+//    public String EditUser(@PathVariable Long userId, Model model) {
+//        User user = userService.SearchUser(userId);
+//        model.addAttribute("user", user);
+//        return "manage/editForm";
+//    }
 
+    @ApiOperation(value = "회원 정보 수정", notes = "사용자 정보 수정")
     @PostMapping("/{userId}/edit")
-    public String EditUser(@PathVariable Long userId, @ModelAttribute User user) {
+    public String editById(@PathVariable Long userId, @ModelAttribute User user) {
         userService.UpdateUser(userId, user);
         return "redirect:/manage/users/{userId}";
     }
 
+    @ApiOperation(value = "탈퇴", notes = "사용자 정보 삭제")
     @DeleteMapping("/{userId}/delete")
-    public String DeleteUser(@PathVariable("userId") Long userId, Model model){
+    public String deleteById(@PathVariable("userId") Long userId, Model model){
         userService.DeleteUser(userId);
         List<User> users = userService.SearchAll();
         model.addAttribute("users",users);

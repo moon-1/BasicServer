@@ -1,5 +1,6 @@
 package KU.GraduationProject.BasicServer.Domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;

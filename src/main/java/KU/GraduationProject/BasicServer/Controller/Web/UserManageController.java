@@ -24,14 +24,6 @@ public class UserManageController {
 
     private final UserService userService;
 
-//    @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
-//    @GetMapping
-//    public String Users(Model model){
-//        List<User> users = userService.SearchAll();
-//        model.addAttribute("users",users);
-//        return "manage/users";
-//    }
-
     @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
     @GetMapping
     public List<User> findAll(){
@@ -45,12 +37,6 @@ public class UserManageController {
         return user;
     }
 
-//    @ApiOperation(value = "회원가입", notes = "새로운 사용자 추가")
-//    @GetMapping("/add")
-//    public String AddUser() {
-//        return "manage/addForm";
-//    }
-
     @ApiOperation(value = "회원가입", notes = "새로운 사용자 추가")
     @PostMapping("/add")
     public User AddUser(@ModelAttribute User user) {
@@ -58,13 +44,6 @@ public class UserManageController {
         User savedUser = userService.SearchUser(id);
         return savedUser;
     }
-
-//    @GetMapping("/{userId}/edit")
-//    public String EditUser(@PathVariable Long userId, Model model) {
-//        User user = userService.SearchUser(userId);
-//        model.addAttribute("user", user);
-//        return "manage/editForm";
-//    }
 
     @ApiOperation(value = "회원 정보 수정", notes = "사용자 정보 수정")
     @PostMapping("/{userId}/edit")

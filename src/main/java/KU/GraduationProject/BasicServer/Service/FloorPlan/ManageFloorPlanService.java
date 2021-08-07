@@ -1,7 +1,7 @@
-package KU.GraduationProject.BasicServer.Service;
+package KU.GraduationProject.BasicServer.Service.FloorPlan;
 
 import KU.GraduationProject.BasicServer.Domain.FloorPlan.FloorPlan;
-import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlanRepositoryImpl;
+import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan.ManageFloorPlanRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +9,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FloorPlanService {
+public class ManageFloorPlanService {
 
-    private final FloorPlanRepositoryImpl floorPlanRepository;
+    private final ManageFloorPlanRepositoryImpl floorPlanRepository;
 
     public Long saveFloorPlan(FloorPlan floorPlan){
         floorPlanRepository.save(floorPlan);

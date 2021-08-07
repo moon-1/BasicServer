@@ -1,8 +1,7 @@
-package KU.GraduationProject.BasicServer.Controller.Web;
+package KU.GraduationProject.BasicServer.Controller.FloorPlan;
 
 import KU.GraduationProject.BasicServer.Domain.FloorPlan.*;
-import KU.GraduationProject.BasicServer.Domain.User;
-import KU.GraduationProject.BasicServer.Service.FloorPlanService;
+import KU.GraduationProject.BasicServer.Service.FloorPlan.ManageFloorPlanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +17,9 @@ import static KU.GraduationProject.BasicServer.Domain.FloorPlan.DoorProperty.*;
 @Api("Floor Plan API V1")
 @RequestMapping("manage/floorPlans")
 @RequiredArgsConstructor
-public class FloorPlanController {
+public class ManageFloorPlanController {
 
-    private final FloorPlanService floorPlanService;
+    private final ManageFloorPlanService floorPlanService;
 
     @ApiOperation(value = "설계도 목록", notes = "전체 설계도 조회")
     @GetMapping

@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.Controller.Web;
+package KU.GraduationProject.BasicServer.Controller;
 
 import KU.GraduationProject.BasicServer.Domain.User;
 import KU.GraduationProject.BasicServer.Interface.Repository.UserRepositoryImpl;

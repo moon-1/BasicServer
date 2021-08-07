@@ -1,10 +1,10 @@
-package KU.GraduationProject.BasicServer.Interface.Repository;
+package KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan;
 
 import KU.GraduationProject.BasicServer.Domain.FloorPlan.FloorPlan;
 
 import java.util.List;
 
-public interface FloorPlanRepositoryImpl {
+public interface ManageFloorPlanRepositoryImpl {
 
     boolean existsById(Long id);
 
@@ -15,5 +15,7 @@ public interface FloorPlanRepositoryImpl {
     List<FloorPlan> findAll();
 
     FloorPlan save(FloorPlan floorPlan);
+
+
 
 }

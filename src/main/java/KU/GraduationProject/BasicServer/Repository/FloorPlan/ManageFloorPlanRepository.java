@@ -1,7 +1,7 @@
-package KU.GraduationProject.BasicServer.Repository;
+package KU.GraduationProject.BasicServer.Repository.FloorPlan;
 
 import KU.GraduationProject.BasicServer.Domain.FloorPlan.FloorPlan;
-import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlanRepositoryImpl;
+import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan.ManageFloorPlanRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-@RequiredArgsConstructor
-public class FloorPlanRepository implements FloorPlanRepositoryImpl {
+public class ManageFloorPlanRepository implements ManageFloorPlanRepositoryImpl {
 
     private static final Map<Long, FloorPlan> floorPlans = new ConcurrentHashMap<>();
     private static long sequence = 0L;

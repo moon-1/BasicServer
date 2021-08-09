@@ -1,8 +1,8 @@
 package KU.GraduationProject.BasicServer.Domain.FloorPlan;
 
-public class WallPoint {
+public class wallPoint {
 
-    public WallPoint(double x, double y) {
+    public wallPoint(double x, double y) {
         this.x = x;
         this.y = y;
     }

@@ -1,17 +1,12 @@
 package KU.GraduationProject.BasicServer.Controller;
 
-import KU.GraduationProject.BasicServer.Domain.User;
-import KU.GraduationProject.BasicServer.Interface.Repository.UserRepositoryImpl;
-import KU.GraduationProject.BasicServer.Repository.UserRepository;
-import KU.GraduationProject.BasicServer.Service.UserService;
+import KU.GraduationProject.BasicServer.Domain.user;
+import KU.GraduationProject.BasicServer.Service.userManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -20,51 +15,51 @@ import java.util.List;
 @Api("User Management API V1")
 @RequestMapping("/manage/users")
 @RequiredArgsConstructor
-public class UserManageController {
+public class userManageController {
 
-    private final UserService userService;
+    private final userManageService userService;
 
     @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
     @GetMapping
-    public List<User> findAll(){
-        return userService.SearchAll();
+    public List<user> findAll(){
+        return userService.findAll();
     }
 
     @ApiOperation(value = "사용자 정보", notes = "사용자에 대한 상세 정보")
     @GetMapping("/{userId}")
-    public User findById(@PathVariable Long userId){
-        User user = userService.SearchUser(userId);
+    public user findById(@PathVariable Long userId){
+        user user = userService.findById(userId);
         return user;
     }
 
     @ApiOperation(value = "회원가입", notes = "새로운 사용자 추가")
     @PostMapping("/add")
-    public User AddUser(@ModelAttribute User user) {
-        Long id = userService.SaveUser(user);
-        User savedUser = userService.SearchUser(id);
+    public user addUser(@ModelAttribute user user) {
+        Long id = userService.save(user);
+        user savedUser = userService.findById(id);
         return savedUser;
     }
 
     @ApiOperation(value = "회원 정보 수정", notes = "사용자 정보 수정")
     @PostMapping("/{userId}/edit")
-    public String editById(@PathVariable Long userId, @ModelAttribute User user) {
-        userService.UpdateUser(userId, user);
+    public String editById(@PathVariable Long userId, @ModelAttribute user user) {
+        userService.editById(userId, user);
         return "redirect:/manage/users/{userId}";
     }
 
     @ApiOperation(value = "탈퇴", notes = "사용자 정보 삭제")
     @DeleteMapping("/{userId}/delete")
     public String deleteById(@PathVariable("userId") Long userId, Model model){
-        userService.DeleteUser(userId);
-        List<User> users = userService.SearchAll();
+        userService.deleteById(userId);
+        List<user> users = userService.findAll();
         model.addAttribute("users",users);
         return "manage/users";
     }
 
     //Init for test
     @PostConstruct
-    public void Init(){
-        userService.SaveUser(new User("userA","aaa",12));
-        userService.SaveUser(new User("userB","bbb",14));
+    public void init(){
+        userService.save(new user("userA","aaa",12));
+        userService.save(new user("userB","bbb",14));
     }
 }

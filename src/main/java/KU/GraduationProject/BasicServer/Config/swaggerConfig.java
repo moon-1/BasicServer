@@ -10,14 +10,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class swaggerConfig {
 
     private String version = "v1";
     private String title = "User management API" + version;
 
     @Bean
-    public Docket UserManageApi(){
-
+    public Docket userManageApi(){
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()

@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 
 //@Configuration
 //@EnableTransactionManagement
-public class DatabaseConfig {
+public class databaseConfig {
 
     @Bean(name = "dataSource")
     @ConfigurationProperties("spring.datasource")

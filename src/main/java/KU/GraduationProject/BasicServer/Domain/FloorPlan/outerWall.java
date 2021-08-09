@@ -1,13 +1,13 @@
 package KU.GraduationProject.BasicServer.Domain.FloorPlan;
 
-public class InteriorWall {
+public class outerWall {
 
-    public InteriorWall(Wall wall, double thickness) {
+    public outerWall(wall wall, double thickness) {
         this.wall = wall;
         this.thickness = thickness;
     }
 
-    public Wall wall;
+    public wall wall;
 
     public double thickness;
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 //@Entity
 //@Table(name="USER")
-public class User {
+public class user {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,9 +20,9 @@ public class User {
     @Column
     private Integer age;
 
-    public User(){ }
+    public user(){ }
 
-    public User(String userName, String password, Integer age){
+    public user(String userName, String password, Integer age){
         this.userName = userName;
         this.password = password;
         this.age = age;

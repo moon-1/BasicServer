@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import java.util.List;
 
 @Data
-public class FloorPlan {
+public class floorPlan {
 
-    public FloorPlan(){ }
+    public floorPlan(){ }
 
-    public FloorPlan(Long id, String city,String local, String area, String floorPlanName ){
+    public floorPlan(Long id, String city, String local, String area, String floorPlanName ){
         this.id = id;
         this.city = city;
         this.local = local;
@@ -32,10 +32,10 @@ public class FloorPlan {
 
     private String floorPlanName;
 
-    private List<OuterWall> outerWall;
+    private List<outerWall> outerWall;
 
-    private List<InteriorWall> interiorWall;
+    private List<interiorWall> interiorWall;
 
-    private List<Door> door;
+    private List<door> door;
 
 }

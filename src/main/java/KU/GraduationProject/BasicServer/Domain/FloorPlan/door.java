@@ -1,13 +1,13 @@
 package KU.GraduationProject.BasicServer.Domain.FloorPlan;
 
-public class Door {
+public class door {
 
-    public Door(Wall wall, DoorProperty doorProperty) {
+    public door(wall wall,doorProperty doorProperty) {
         this.wall = wall;
         this.doorProperty = doorProperty;
     }
 
-    public Wall wall;
+    public wall wall;
 
-    public DoorProperty doorProperty;
+    public doorProperty doorProperty;
 }

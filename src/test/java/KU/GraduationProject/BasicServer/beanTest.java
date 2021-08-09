@@ -9,7 +9,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class BeanTest {
+public class beanTest {
     @Autowired
     DefaultListableBeanFactory beanFactory;
 

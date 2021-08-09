@@ -1,8 +1,7 @@
 package KU.GraduationProject.BasicServer.Repository.FloorPlan;
 
-import KU.GraduationProject.BasicServer.Domain.FloorPlan.FloorPlan;
-import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan.ManageFloorPlanRepositoryImpl;
-import lombok.RequiredArgsConstructor;
+import KU.GraduationProject.BasicServer.Domain.FloorPlan.floorPlan;
+import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan.floorPlanManageRepositoryImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,9 +10,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class ManageFloorPlanRepository implements ManageFloorPlanRepositoryImpl {
+public class floorPlanManageRepository implements floorPlanManageRepositoryImpl {
 
-    private static final Map<Long, FloorPlan> floorPlans = new ConcurrentHashMap<>();
+    private static final Map<Long, floorPlan> floorPlans = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
     public boolean existsById(Long id){
@@ -25,12 +24,12 @@ public class ManageFloorPlanRepository implements ManageFloorPlanRepositoryImpl 
         }
     }
 
-    public FloorPlan findById(Long id){
+    public floorPlan findById(Long id){
         return floorPlans.get(id);
     }
 
-    public FloorPlan findByFloorPlanName(String floorPlanName){
-        for (FloorPlan floorPlan : floorPlans.values() ) {
+    public floorPlan findByFloorPlanName(String floorPlanName){
+        for (KU.GraduationProject.BasicServer.Domain.FloorPlan.floorPlan floorPlan : floorPlans.values() ) {
             if(floorPlan.getFloorPlanName().equals(floorPlanName)){
                 return floorPlan;
             }
@@ -38,11 +37,11 @@ public class ManageFloorPlanRepository implements ManageFloorPlanRepositoryImpl 
         return null;
     }
 
-    public List<FloorPlan> findAll(){
+    public List<floorPlan> findAll(){
         return new ArrayList<>(floorPlans.values());
     }
 
-    public FloorPlan save(FloorPlan floorPlan){
+    public floorPlan save(floorPlan floorPlan){
         floorPlan.setId(++sequence);
         floorPlans.put(floorPlan.getId(),floorPlan);
         return floorPlan;

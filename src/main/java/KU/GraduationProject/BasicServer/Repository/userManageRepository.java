@@ -1,7 +1,7 @@
 package KU.GraduationProject.BasicServer.Repository;
 
-import KU.GraduationProject.BasicServer.Domain.User;
-import KU.GraduationProject.BasicServer.Interface.Repository.UserRepositoryImpl;
+import KU.GraduationProject.BasicServer.Domain.user;
+import KU.GraduationProject.BasicServer.Interface.Repository.userManageRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,39 +12,39 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepository implements UserRepositoryImpl{
+public class userManageRepository implements userManageRepositoryImpl {
 
-    private static final Map<Long, User> member = new ConcurrentHashMap<>();
+    private static final Map<Long, user> member = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
-    public User SaveUser(User user){
+    public user save(user user){
         user.setId(++sequence);
         member.put(user.getId(),user);
         return user;
     }
 
-    public User SearchUser(String userName){ return member.get(userName);}
+    public user findByUserName(String userName){ return member.get(userName);}
 
-    public User SearchUser(Long id){
+    public user findById(Long id){
         return member.get(id);
     }
 
-    public List<User> SearchAll(){
+    public List<user> findAll(){
         return new ArrayList<>(member.values());
     }
 
-    public void UpdateUser(Long userId, User updateParameter){
-        User user = SearchUser(userId);
+    public void editById(Long userId, user updateParameter){
+        user user = findById(userId);
         user.setUserName(updateParameter.getUserName());
         user.setPassword(updateParameter.getPassword());
         user.setAge(updateParameter.getAge());
     }
 
-    public void DeleteUser(Long userId){
+    public void deleteById(Long userId){
         member.remove(userId);
     }
 
-    public void ClearUser(){
+    public void deleteAll(){
         member.clear();
     }
 }

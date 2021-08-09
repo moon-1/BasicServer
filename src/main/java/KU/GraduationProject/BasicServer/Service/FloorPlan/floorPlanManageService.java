@@ -1,7 +1,7 @@
 package KU.GraduationProject.BasicServer.Service.FloorPlan;
 
-import KU.GraduationProject.BasicServer.Domain.FloorPlan.FloorPlan;
-import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan.ManageFloorPlanRepositoryImpl;
+import KU.GraduationProject.BasicServer.Domain.FloorPlan.floorPlan;
+import KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan.floorPlanManageRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,29 +9,29 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ManageFloorPlanService {
+public class floorPlanManageService {
 
-    private final ManageFloorPlanRepositoryImpl floorPlanRepository;
+    private final floorPlanManageRepositoryImpl floorPlanRepository;
 
-    public Long saveFloorPlan(FloorPlan floorPlan){
+    public Long saveFloorPlan(floorPlan floorPlan){
         floorPlanRepository.save(floorPlan);
         return floorPlan.getId();
     }
 
-    public List<FloorPlan> findAll(){
+    public List<floorPlan> findAll(){
         return floorPlanRepository.findAll();
     }
 
-    public FloorPlan findById(Long id){
-        FloorPlan floorPlan = floorPlanRepository.findById(id);
+    public floorPlan findById(Long id){
+        floorPlan floorPlan = floorPlanRepository.findById(id);
         if(!floorPlanRepository.existsById(floorPlan.getId())){
             throw new IllegalArgumentException();
         }
         return floorPlan;
     }
 
-    public FloorPlan findByFloorPlanName(String floorPlanName){
-        FloorPlan floorPlan = floorPlanRepository.findByFloorPlanName(floorPlanName);
+    public floorPlan findByFloorPlanName(String floorPlanName){
+        floorPlan floorPlan = floorPlanRepository.findByFloorPlanName(floorPlanName);
         if(!floorPlanRepository.existsById(floorPlan.getId())){
             throw new IllegalArgumentException();
         }

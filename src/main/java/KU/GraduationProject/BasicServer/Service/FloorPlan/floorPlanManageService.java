@@ -11,37 +11,41 @@ import java.util.List;
 @RequiredArgsConstructor
 public class floorPlanManageService {
 
-    private final floorPlanManageRepositoryImpl floorPlanRepository;
+    private final floorPlanManageRepositoryImpl floorPlanManageRepository;
 
     public Long saveFloorPlan(floorPlan floorPlan){
-        floorPlanRepository.save(floorPlan);
+        floorPlanManageRepository.save(floorPlan);
         return floorPlan.getId();
     }
 
     public List<floorPlan> findAll(){
-        return floorPlanRepository.findAll();
+        return floorPlanManageRepository.findAll();
     }
 
     public floorPlan findById(Long id){
-        floorPlan floorPlan = floorPlanRepository.findById(id);
-        if(!floorPlanRepository.existsById(floorPlan.getId())){
+        floorPlan floorPlan = floorPlanManageRepository.findById(id);
+        if(!floorPlanManageRepository.existsById(floorPlan.getId())){
             throw new IllegalArgumentException();
         }
         return floorPlan;
     }
 
     public floorPlan findByFloorPlanName(String floorPlanName){
-        floorPlan floorPlan = floorPlanRepository.findByFloorPlanName(floorPlanName);
-        if(!floorPlanRepository.existsById(floorPlan.getId())){
+        floorPlan floorPlan = floorPlanManageRepository.findByFloorPlanName(floorPlanName);
+        if(!floorPlanManageRepository.existsById(floorPlan.getId())){
             throw new IllegalArgumentException();
         }
         return floorPlan;
     }
 
     public boolean existsById(Long userId){
-        if (floorPlanRepository.existsById(userId)) {
+        if (floorPlanManageRepository.existsById(userId)) {
             return true;
         }
         return false;
+    }
+
+    public void deleteAll(){
+        floorPlanManageRepository.deleteAll();
     }
 }

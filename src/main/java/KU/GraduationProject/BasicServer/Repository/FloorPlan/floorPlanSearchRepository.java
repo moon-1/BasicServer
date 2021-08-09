@@ -53,12 +53,6 @@ public class floorPlanSearchRepository implements floorPlanSearchRepositoryImpl 
         return contents;
     }
 
-//    public String encode(String floorPlanBase64) {
-//        return Base64.getUrlEncoder()
-//                .withoutPadding()
-//                .encodeToString(floorPlanBase64.getBytes(StandardCharsets.UTF_8));
-//    }
-
     private List<String> findByPath(String path){
         return floorPlansPath.get(path);
     }
@@ -78,5 +72,6 @@ public class floorPlanSearchRepository implements floorPlanSearchRepositoryImpl 
         return floorPlanJson;
     }
 
+    public void deleteAll(){ floorPlansPath.clear();}
 
 }

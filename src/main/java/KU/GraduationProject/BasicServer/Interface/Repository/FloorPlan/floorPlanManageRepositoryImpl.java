@@ -16,4 +16,6 @@ public interface floorPlanManageRepositoryImpl {
 
     floorPlan save(floorPlan floorPlan);
 
+    void deleteAll();
+
 }

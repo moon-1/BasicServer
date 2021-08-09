@@ -2,15 +2,20 @@ package KU.GraduationProject.BasicServer.Service;
 
 import KU.GraduationProject.BasicServer.Domain.user;
 import KU.GraduationProject.BasicServer.Interface.Repository.userManageRepositoryImpl;
+import KU.GraduationProject.BasicServer.Service.FloorPlan.floorPlanSearchService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class userManageService {
 
+    private static final Logger log = LoggerFactory.getLogger(userManageService.class);
     private final userManageRepositoryImpl userRepository;
 
     public Long save(user user){
@@ -26,20 +31,46 @@ public class userManageService {
     }
 
     public List<user> findAll(){
-        return userRepository.findAll();
+        List<user> users = new ArrayList<user>();
+        try{
+            users = userRepository.findAll();
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+        return users;
     }
 
     public user findById(Long id){
-        return userRepository.findById(id);
+        user user = new user();
+        try{
+            user = userRepository.findById(id);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+        return user;
     }
 
     public user findByUserName(String userName){
-        return userRepository.findByUserName(userName);
+        user user = new user();
+        try{
+            user = userRepository.findByUserName(userName);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+        return user;
     }
 
     public void editById(Long userId, user updateParameter){
         checkIsUserExist(userId);
-        userRepository.editById(userId,updateParameter);
+        try{
+            userRepository.editById(userId,updateParameter);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
     }
 
     private void checkIsUserExist(Long userId){
@@ -50,11 +81,18 @@ public class userManageService {
 
     public void deleteById(Long userId){
         checkIsUserExist(userId);
-        userRepository.deleteById(userId);
+        try{
+            userRepository.deleteById(userId);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
     }
 
     public void deleteAll(){
-        userRepository.deleteAll();
+        if(userRepository.findAll() != null){
+            userRepository.deleteAll();
+        }
     }
 
 }

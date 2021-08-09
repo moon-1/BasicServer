@@ -47,4 +47,6 @@ public class floorPlanManageRepository implements floorPlanManageRepositoryImpl 
         return floorPlan;
     }
 
+    public void deleteAll(){ floorPlans.clear();}
+
 }

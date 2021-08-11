@@ -1,8 +1,7 @@
 package KU.GraduationProject.BasicServer.Service;
 
-import KU.GraduationProject.BasicServer.Domain.user;
+import KU.GraduationProject.BasicServer.domain.entity.user;
 import KU.GraduationProject.BasicServer.Interface.Repository.userManageRepositoryImpl;
-import KU.GraduationProject.BasicServer.Service.FloorPlan.floorPlanSearchService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,15 +19,8 @@ public class userManageService {
     private final userManageRepositoryImpl userRepository;
 
     public Long save(user user){
-        checkDuplicateUser(user);
         userRepository.save(user);
         return user.getId();
-    }
-
-    private void checkDuplicateUser(user user){
-        if (userRepository.findByUserName(user.getUserName()) != null) {
-            throw new IllegalStateException("중복되는 아이디 입니다.");
-        }
     }
 
     public List<user> findAll(){
@@ -41,8 +34,8 @@ public class userManageService {
         return users;
     }
 
-    public user findById(Long id){
-        user user = new user();
+    public Optional<user> findById(Long id){
+        Optional<user> user = Optional.empty();
         try{
             user = userRepository.findById(id);
         }
@@ -52,8 +45,8 @@ public class userManageService {
         return user;
     }
 
-    public user findByUserName(String userName){
-        user user = new user();
+    public Optional<user> findByUserName(String userName){
+        Optional<user> user = Optional.empty();
         try{
             user = userRepository.findByUserName(userName);
         }
@@ -63,10 +56,14 @@ public class userManageService {
         return user;
     }
 
-    public void editById(Long userId, user updateParameter){
+    public void editById(Long userId, user update){
         checkIsUserExist(userId);
         try{
-            userRepository.editById(userId,updateParameter);
+            Optional<user> user = userRepository.findById(userId);
+            user.get().setUserName(update.getUserName());
+            user.get().setPassword(update.getPassword());
+            user.get().setAge(update.getAge());
+            userRepository.save(user.get());
         }
         catch(Exception ex){
             log.error(ex.getMessage());

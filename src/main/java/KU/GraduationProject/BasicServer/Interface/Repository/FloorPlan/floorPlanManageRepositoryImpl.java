@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan;
 
-import KU.GraduationProject.BasicServer.Domain.FloorPlan.floorPlan;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlan.floorPlan;
 
 import java.util.List;
 

@@ -1,8 +1,11 @@
-package KU.GraduationProject.BasicServer.Interface.Repository.FloorPlan;
+package KU.GraduationProject.BasicServer.domain.repository.floorPlan;
+
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface floorPlanSearchRepositoryImpl {
+//@Repository
+public interface floorPlanSearchRepositoryImpl{
 
     List<String> cityListProvider();
 

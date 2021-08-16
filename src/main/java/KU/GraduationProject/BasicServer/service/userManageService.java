@@ -1,7 +1,7 @@
-package KU.GraduationProject.BasicServer.Service;
+package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.user;
-import KU.GraduationProject.BasicServer.Interface.Repository.userManageRepositoryImpl;
+import KU.GraduationProject.BasicServer.domain.repository.userManageRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class userManageService {
 
     public Long save(user user){
         userRepository.save(user);
-        return user.getId();
+        return user.getUserId();
     }
 
     public List<user> findAll(){
@@ -62,7 +62,11 @@ public class userManageService {
             Optional<user> user = userRepository.findById(userId);
             user.get().setUserName(update.getUserName());
             user.get().setPassword(update.getPassword());
-            user.get().setAge(update.getAge());
+            user.get().setEmail(update.getEmail());
+            user.get().setBirth(update.getBirth());
+            if(update.getImage()!=null){
+                user.get().setImage(update.getImage());
+            }
             userRepository.save(user.get());
         }
         catch(Exception ex){

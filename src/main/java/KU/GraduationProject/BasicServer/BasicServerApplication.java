@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @SpringBootApplication
-//@ComponentScan("KU.GraduationProject.BasicServer.Controller")
-//@EntityScan(basePackageClasses = User.class)
-//@EnableJpaRepositories(basePackageClasses = UserRepository.class)
 public class BasicServerApplication {
 
 	public static void main(String[] args) {

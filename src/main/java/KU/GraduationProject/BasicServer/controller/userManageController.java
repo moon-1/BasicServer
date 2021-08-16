@@ -1,16 +1,14 @@
 package KU.GraduationProject.BasicServer.controller;
 
 import KU.GraduationProject.BasicServer.domain.entity.user;
-import KU.GraduationProject.BasicServer.Service.userManageService;
+import KU.GraduationProject.BasicServer.service.userManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Api("User Management API V1")
@@ -52,7 +50,7 @@ public class userManageController {
         userService.deleteById(userId);
         List<user> users = userService.findAll();
         model.addAttribute("users",users);
-        return "update user : [" + userId + "]" ;
+        return "delete user : [" + userId + "]" ;
     }
 
 }

@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.controller.floorPlan;
 
-import KU.GraduationProject.BasicServer.Service.floorPlan.floorPlanSearchService;
+import KU.GraduationProject.BasicServer.service.floorPlan.floorPlanSearchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class floorPlanSearchController {
 
-    private final floorPlanSearchService searchFloorPlanService;
+    private floorPlanSearchService searchFloorPlanService;
 
     @ApiOperation(value = "도시 목록", notes = "도시 목록 제공")
     @GetMapping("/cityList")

@@ -2,8 +2,8 @@ package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.area;
 import KU.GraduationProject.BasicServer.domain.entity.city;
-import KU.GraduationProject.BasicServer.domain.repository.areaManageRepositoryImpl;
-import KU.GraduationProject.BasicServer.domain.repository.cityManageRepositoryImpl;
+import KU.GraduationProject.BasicServer.domain.repository.areaRepositoryImpl;
+import KU.GraduationProject.BasicServer.domain.repository.cityRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +22,35 @@ public class areaManageService {
 
     private static String rootPath = "/Users/moon/Desktop/FloorPlan";
 
-    private final areaManageRepositoryImpl areaManageRepository;
+    private final areaRepositoryImpl areaManageRepository;
 
-    private final cityManageRepositoryImpl cityManageRepository;
+    private final cityRepositoryImpl cityManageRepository;
 
     public List<area> findAll(){
-        return areaManageRepository.findAll();
+        List<area> area = new ArrayList<>();
+        try{
+            area = areaManageRepository.findAll();
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+        return area;
+    }
+
+    public void deleteAll(){
+        try{
+            areaManageRepository.deleteAll();
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
     }
 
     public List<area> findByCity(Long cityId){
         List<area> areaList = areaManageRepository.findAll();
         List<area> areaListByCityId = new ArrayList<>();
         for(area area : areaList){
-            if(area.getCityId().equals(cityId)){
+            if(area.getCity().getCityId().equals(cityId)){
                 areaListByCityId.add(area);
             }
         }
@@ -57,11 +73,10 @@ public class areaManageService {
             File[] directories = new File(rootPath).listFiles(File::isDirectory);
             for(File directory : directories){
                 if(directory.getName().contains("본부")){
-                    String[] fileName = directory.getName().split("_");
-                    fileName[0] = fileName[0].replace("본부","");
-                    if(cityManageRepository.existsByName(fileName[0])){
-                        areaManageRepository.save(new
-                                area(fileName[1],(cityManageRepository.findByName(fileName[0])).get().getCityId()));
+                    String[] fileName = directory.getName().split("본부_");
+                    if(cityManageRepository.existsByName(fileName[0]) &&!areaManageRepository.existsByName(fileName[1])){
+                        city city = cityManageRepository.findByName(fileName[0]).get();
+                        areaManageRepository.save(new area(fileName[1],city));
                     }
                 }
             }

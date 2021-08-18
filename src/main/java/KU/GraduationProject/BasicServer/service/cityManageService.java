@@ -1,8 +1,7 @@
 package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.city;
-import KU.GraduationProject.BasicServer.domain.entity.user;
-import KU.GraduationProject.BasicServer.domain.repository.cityManageRepositoryImpl;
+import KU.GraduationProject.BasicServer.domain.repository.cityRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +21,12 @@ public class cityManageService {
     //private static String rootPath = "/home/ec2-user/FloorPlan/";
     private static String rootPath = "/Users/moon/Desktop/FloorPlan";
 
-    private final cityManageRepositoryImpl cityManageRepositoryImpl;
+    private final cityRepositoryImpl cityRepositoryImpl;
 
     public List<city> findAll(){
         List<city> cityList = new ArrayList<>();
         try{
-            cityList = cityManageRepositoryImpl.findAll();
+            cityList = cityRepositoryImpl.findAll();
         }
         catch(Exception ex){
             log.error(ex.getMessage());
@@ -38,7 +37,7 @@ public class cityManageService {
     public Optional<city> findById(Long id){
         Optional<city> city = Optional.empty();
         try{
-            city = cityManageRepositoryImpl.findById(id);
+            city = cityRepositoryImpl.findById(id);
         }
         catch(Exception ex){
             log.error(ex.getMessage());
@@ -47,7 +46,7 @@ public class cityManageService {
     }
 
     public void deleteAll(){
-        cityManageRepositoryImpl.deleteAll();
+        cityRepositoryImpl.deleteAll();
     }
 
     public List<city> updateCityList(){
@@ -57,8 +56,8 @@ public class cityManageService {
                 if(directory.getName().contains("본부")){
                     String[] fileName = directory.getName().split("_");
                     fileName[0] = fileName[0].replace("본부","");
-                    if(!cityManageRepositoryImpl.existsByName(fileName[0])){
-                        cityManageRepositoryImpl.save(new city(fileName[0]));
+                    if(!cityRepositoryImpl.existsByName(fileName[0])){
+                        cityRepositoryImpl.save(new city(fileName[0]));
                     }
                 }
             }
@@ -66,13 +65,13 @@ public class cityManageService {
         catch(Exception ex){
             log.error(ex.getMessage());
         }
-        return cityManageRepositoryImpl.findAll();
+        return cityRepositoryImpl.findAll();
     }
 
     public Optional<city> findByName(String name){
         Optional<city> city = Optional.empty();
         try{
-            city = cityManageRepositoryImpl.findByName(name);
+            city = cityRepositoryImpl.findByName(name);
         }
         catch(Exception ex){
             log.error(ex.getMessage());

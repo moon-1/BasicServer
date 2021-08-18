@@ -7,11 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface cityManageRepositoryImpl extends JpaRepository<city,Long> {
+public interface cityRepositoryImpl extends JpaRepository<city,Long> {
 
     Optional<city> findByName(String name);
 
     boolean existsByName(String name);
-
 
 }

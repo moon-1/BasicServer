@@ -19,11 +19,12 @@ public class area {
     private Long areaId;
     @Column
     private String name;
-    @Column
-    private Long cityId;
+    @ManyToOne(targetEntity = city.class)
+    @JoinColumn(name = "cityId")
+    private city city;
 
-    public area(String name,Long cityId){
+    public area(String name, city city){
         this.name = name;
-        this.cityId = cityId;
+        this.city = city;
     }
 }

@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface areaManageRepositoryImpl extends JpaRepository<area,Long> {
+public interface areaRepositoryImpl extends JpaRepository<area,Long> {
 
     Optional<area> findByName(String name);
 
-    List<area> findByCityId(Long cityId);
+    boolean existsByName(String name);
+
 }

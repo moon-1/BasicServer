@@ -16,9 +16,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class areaManageService {
+public class areaService {
 
-    private static final Logger log = LoggerFactory.getLogger(areaManageService.class);
+    private static final Logger log = LoggerFactory.getLogger(areaService.class);
 
     private static String rootPath = "/Users/moon/Desktop/FloorPlan";
 
@@ -47,12 +47,12 @@ public class areaManageService {
     }
 
     public List<area> findByCity(Long cityId){
-        List<area> areaList = areaManageRepository.findAll();
         List<area> areaListByCityId = new ArrayList<>();
-        for(area area : areaList){
-            if(area.getCity().getCityId().equals(cityId)){
-                areaListByCityId.add(area);
-            }
+        try{
+            areaListByCityId = areaManageRepository.findByCity_cityId(cityId);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
         }
         return areaListByCityId;
     }

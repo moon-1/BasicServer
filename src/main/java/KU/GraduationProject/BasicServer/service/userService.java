@@ -1,7 +1,7 @@
 package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.user;
-import KU.GraduationProject.BasicServer.domain.repository.userManageRepositoryImpl;
+import KU.GraduationProject.BasicServer.domain.repository.userRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +13,10 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class userManageService {
+public class userService {
 
-    private static final Logger log = LoggerFactory.getLogger(userManageService.class);
-    private final userManageRepositoryImpl userRepository;
+    private static final Logger log = LoggerFactory.getLogger(userService.class);
+    private final userRepositoryImpl userRepository;
 
     public Long save(user user){
         userRepository.save(user);
@@ -75,7 +75,7 @@ public class userManageService {
     }
 
     private void checkIsUserExist(Long userId){
-        if (userRepository.findById(userId) == null) {
+        if (!userRepository.existsById(userId)) {
             throw new IllegalStateException("존재하지 않는 사용자 입니다");
         }
     }

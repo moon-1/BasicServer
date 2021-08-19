@@ -22,9 +22,18 @@ public class project {
     private Date date;
     @Column
     private String name;
-    @Column
-    private Long userId;
-    @Column
-    private Long floorPlanId;
+    @ManyToOne(targetEntity = user.class)
+    @JoinColumn(name = "userId")
+    private user user;
+    @ManyToOne(targetEntity = floorPlan.class)
+    @JoinColumn(name = "floorPlanId")
+    private floorPlan floorPlan;
+
+    public project(Date date, String name, user user, floorPlan floorPlan){
+        this.date = date;
+        this.name = name;
+        this.user = user;
+        this.floorPlan = floorPlan;
+    }
 
 }

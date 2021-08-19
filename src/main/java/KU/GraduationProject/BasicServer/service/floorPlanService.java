@@ -52,12 +52,12 @@ public class floorPlanService {
     }
 
     public List<floorPlan> findByAreaId(Long areaId){
-        List<floorPlan> floorPlanList = floorPlanRepository.findAll();
         List<floorPlan> floorPlanListByAreaId = new ArrayList<>();
-        for(floorPlan floorPlan : floorPlanList){
-            if(floorPlan.getArea().getAreaId().equals(areaId)){
-                floorPlanListByAreaId.add(floorPlan);
-            }
+        try{
+            floorPlanListByAreaId = floorPlanRepository.findByArea_areaId(areaId);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
         }
         return floorPlanListByAreaId;
     }

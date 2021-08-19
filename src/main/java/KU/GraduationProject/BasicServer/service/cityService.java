@@ -14,9 +14,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class cityManageService {
+public class cityService {
 
-    private static final Logger log = LoggerFactory.getLogger(cityManageService.class);
+    private static final Logger log = LoggerFactory.getLogger(cityService.class);
 
     //private static String rootPath = "/home/ec2-user/FloorPlan/";
     private static String rootPath = "/Users/moon/Desktop/FloorPlan";

@@ -1,7 +1,6 @@
 package KU.GraduationProject.BasicServer.controller;
 
 import KU.GraduationProject.BasicServer.domain.entity.user;
-import KU.GraduationProject.BasicServer.service.userManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +13,9 @@ import java.util.List;
 @Api("User Management API V1")
 @RequestMapping("/manage/users")
 @RequiredArgsConstructor
-public class userManageController {
+public class userController {
 
-    private final userManageService userService;
+    private final KU.GraduationProject.BasicServer.service.userService userService;
 
     @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
     @GetMapping

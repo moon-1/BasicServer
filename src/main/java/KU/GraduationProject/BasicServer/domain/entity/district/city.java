@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.domain.entity;
+package KU.GraduationProject.BasicServer.domain.entity.district;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,23 +8,19 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@Entity(name="area")
+@Entity(name="city")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class area {
+public class city {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long areaId;
-    @Column
+    private Long cityId;
+    @Column(name = "name")
     private String name;
-    @ManyToOne(targetEntity = city.class)
-    @JoinColumn(name = "cityId")
-    private city city;
 
-    public area(String name, city city){
+    public city(String name){
         this.name = name;
-        this.city = city;
     }
 }

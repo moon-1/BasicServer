@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.controller;
 
-import KU.GraduationProject.BasicServer.domain.entity.city;
+import KU.GraduationProject.BasicServer.domain.entity.district.city;
 import KU.GraduationProject.BasicServer.service.cityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

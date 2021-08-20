@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.domain.entity;
+package KU.GraduationProject.BasicServer.domain.entity.furnitures;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,19 +8,19 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@Entity(name="city")
+@Entity(name ="furniture")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class city {
+public class furniture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cityId;
-    @Column(name = "name")
+    private Long furnitureId;
+    @Column(nullable=false)
     private String name;
-
-    public city(String name){
-        this.name = name;
-    }
+    @Column
+    private String url;
+    @Column(nullable = false)
+    private String furniture3DData;
 }

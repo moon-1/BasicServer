@@ -1,5 +1,6 @@
-package KU.GraduationProject.BasicServer.domain.entity;
+package KU.GraduationProject.BasicServer.domain.entity.floorPlans;
 
+import KU.GraduationProject.BasicServer.domain.entity.district.area;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class floorPlan{
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] image;
-    @ManyToOne(targetEntity = area.class)
+    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.district.area.class)
     @JoinColumn(name = "areaId")
     private area area;
 

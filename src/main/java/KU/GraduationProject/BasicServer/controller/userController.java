@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.controller;
 
-import KU.GraduationProject.BasicServer.domain.entity.user;
+import KU.GraduationProject.BasicServer.domain.entity.account.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +29,14 @@ public class userController {
         return userService.findById(userId).get();
     }
 
-    @ApiOperation(value = "회원가입", notes = "새로운 사용자 추가")
+    @ApiOperation(value = "회원가입", notes = "새로운 사용자 추가, 출생년도의 경우 'yyyy/mm/dd' 포맷으로 입력")
     @PostMapping("/add")
     public user addUser(@ModelAttribute user user) {
         Long id = userService.save(user);
         return userService.findById(id).get();
     }
 
-    @ApiOperation(value = "회원 정보 수정", notes = "사용자 정보 수정")
+    @ApiOperation(value = "회원 정보 수정", notes = "사용자 정보 수정, 출생년도의 경우 'yyyy/mm/dd' 포맷으로 입력")
     @PostMapping("/{userId}/edit")
     public String editById(@PathVariable Long userId, @ModelAttribute user user) {
         userService.editById(userId, user);

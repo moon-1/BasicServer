@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.controller;
 
-import KU.GraduationProject.BasicServer.domain.entity.floorPlan;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan;
 import KU.GraduationProject.BasicServer.service.floorPlanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

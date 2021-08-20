@@ -1,5 +1,6 @@
-package KU.GraduationProject.BasicServer.domain.entity;
+package KU.GraduationProject.BasicServer.domain.entity.floorPlans;
 
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class wallPlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wallPlotId;
-    @Column
-    private Long floorPlanId;
+    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan.class)
+    @JoinColumn(name = "floorPlanId")
+    private floorPlan floorPlan;
 }

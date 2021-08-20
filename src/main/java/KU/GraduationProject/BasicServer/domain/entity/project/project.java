@@ -1,5 +1,7 @@
-package KU.GraduationProject.BasicServer.domain.entity;
+package KU.GraduationProject.BasicServer.domain.entity.project;
 
+import KU.GraduationProject.BasicServer.domain.entity.account.user;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,10 +24,10 @@ public class project {
     private Date date;
     @Column
     private String name;
-    @ManyToOne(targetEntity = user.class)
+    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.account.user.class)
     @JoinColumn(name = "userId")
     private user user;
-    @ManyToOne(targetEntity = floorPlan.class)
+    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan.class)
     @JoinColumn(name = "floorPlanId")
     private floorPlan floorPlan;
 

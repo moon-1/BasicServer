@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.service;
 
-import KU.GraduationProject.BasicServer.domain.entity.user;
+import KU.GraduationProject.BasicServer.domain.entity.account.user;
 import KU.GraduationProject.BasicServer.domain.repository.userRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

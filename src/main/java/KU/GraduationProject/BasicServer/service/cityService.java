@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.service;
 
-import KU.GraduationProject.BasicServer.domain.entity.city;
+import KU.GraduationProject.BasicServer.domain.entity.district.city;
 import KU.GraduationProject.BasicServer.domain.repository.cityRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

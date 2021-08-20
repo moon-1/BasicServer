@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.domain.entity;
+package KU.GraduationProject.BasicServer.domain.entity.account;
 
 import lombok.*;
 

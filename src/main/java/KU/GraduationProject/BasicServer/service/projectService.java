@@ -43,8 +43,13 @@ public class projectService {
     }
 
     public Long save(project project){
-        project.setDate(new Date(System.currentTimeMillis()));
-        projectRepository.save(project);
+        try{
+            project.setDate(new Date(System.currentTimeMillis()));
+            projectRepository.save(project);
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
         return project.getProjectId();
     }
 

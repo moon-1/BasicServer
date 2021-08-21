@@ -23,4 +23,10 @@ public class furniture {
     private String url;
     @Column(nullable = false)
     private String furniture3DData;
+
+    public furniture(String name, String url, String furniture3DData){
+        this.name = name;
+        this.url = url;
+        this.furniture3DData = furniture3DData;
+    }
 }

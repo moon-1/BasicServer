@@ -20,8 +20,6 @@ public class areaService {
 
     private static final Logger log = LoggerFactory.getLogger(areaService.class);
 
-    private static String rootPath = "/Users/moon/Desktop/FloorPlan";
-
     private final areaRepositoryImpl areaManageRepository;
 
     private final cityRepositoryImpl cityManageRepository;
@@ -68,8 +66,9 @@ public class areaService {
         return area;
     }
 
-    public List<area> updateArea(){
+    public List<area> updateArea(String rootPath){
         try{
+            rootPath = rootPath.replace("@","/");
             File[] directories = new File(rootPath).listFiles(File::isDirectory);
             for(File directory : directories){
                 if(directory.getName().contains("본부")){

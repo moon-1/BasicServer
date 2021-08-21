@@ -22,8 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class floorPlanService {
 
-    private static String rootPath = "/Users/moon/Desktop/FloorPlan";
-
     private static final Logger log = LoggerFactory.getLogger(floorPlanService.class);
 
     private final floorPlanRepositoryImpl floorPlanRepository;
@@ -81,8 +79,9 @@ public class floorPlanService {
         return floorPlanJson;
     }
 
-    public List<floorPlan> updateFloorPlan(){
+    public List<floorPlan> updateFloorPlan(String rootPath){
         try{
+            rootPath = rootPath.replace("@","/");
             List<area> areaList = areaRepository.findAll();
             for(area area : areaList){
                 String city = area.getCity().getName() + "본부";
@@ -98,5 +97,13 @@ public class floorPlanService {
             log.error(ex.getMessage());
         }
         return floorPlanRepository.findAll();
+    }
+
+    public String findImageById()
+    {
+        String path;
+        path = "@Users@moon@Desktop@FloorPlan@인천본부_고양향동S-2BL(공임리츠)@평면-고양S2-74A-0623.json";
+        path = path.replace("@","/");
+        return floorPlanJsonFileReader(path);
     }
 }

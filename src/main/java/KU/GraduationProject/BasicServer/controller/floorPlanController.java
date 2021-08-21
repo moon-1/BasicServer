@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -29,10 +30,17 @@ public class floorPlanController {
         return floorPlanService.findByAreaId(areaId);
     }
 
-    @ApiOperation(value = "구역별 도면 정보 업데이트", notes = "DB에 전체 도면 데이터 업데이트")
-    @GetMapping("/update")
-    public List<floorPlan> updateFloorPlan(){
-        return floorPlanService.updateFloorPlan();
+    @ApiOperation(value = "이미지 반환", notes = "이미지 반환")
+    @GetMapping("/image")
+    public byte[] findImageById(){
+        String contents = floorPlanService.findImageById();
+        return contents.getBytes(StandardCharsets.UTF_8);
+    }
+
+    @ApiOperation(value = "구역별 도면 정보 업데이트", notes = "DB에 전체 도면 데이터 업데이트,   " +"path 는 '/'대신 '@'구분자로 경로입력")
+    @GetMapping("/update/{path}")
+    public List<floorPlan> updateFloorPlan(@PathVariable String path){
+        return floorPlanService.updateFloorPlan(path);
     }
 
     @ApiOperation(value = "전체 삭제", notes = "도면 목록 전체 삭제")

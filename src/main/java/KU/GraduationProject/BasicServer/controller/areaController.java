@@ -29,10 +29,10 @@ public class areaController {
         return areaService.findByCity(cityId);
     }
 
-    @ApiOperation(value = "도시별 구역 목록 업데이트", notes = "DB에 도시 데이터 업데이트")
-    @GetMapping("/update")
-    public List<area> updateAreaList(){
-        return areaService.updateArea();
+    @ApiOperation(value = "도시별 구역 목록 업데이트", notes = "DB에 도시 데이터 업데이트,     " +"path 는 '/'대신 '@'구분자로 경로입력")
+    @GetMapping("/update/{path}")
+    public List<area> updateAreaList(@PathVariable String path){
+        return areaService.updateArea(path);
     }
 
     @ApiOperation(value = "전체 삭제", notes = "도시 구역 목록 전체 삭제")

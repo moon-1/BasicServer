@@ -18,9 +18,6 @@ public class cityService {
 
     private static final Logger log = LoggerFactory.getLogger(cityService.class);
 
-    //private static String rootPath = "/home/ec2-user/FloorPlan/";
-    private static String rootPath = "/Users/moon/Desktop/FloorPlan";
-
     private final cityRepositoryImpl cityRepositoryImpl;
 
     public List<city> findAll(){
@@ -49,8 +46,9 @@ public class cityService {
         cityRepositoryImpl.deleteAll();
     }
 
-    public List<city> updateCityList(){
+    public List<city> updateCityList(String rootPath){
         try{
+            rootPath = rootPath.replace("@","/");
             File[] directories = new File(rootPath).listFiles(File::isDirectory);
             for(File directory : directories){
                 if(directory.getName().contains("본부")){

@@ -30,7 +30,7 @@ public class floorPlanController {
         return floorPlanService.findByAreaId(areaId);
     }
 
-    @ApiOperation(value = "이미지 반환", notes = "이미지 반환")
+    @ApiOperation(value = "테스트용 이미지 반환", notes = "이미지 반환")
     @GetMapping("/image")
     public byte[] findImageById(){
         String contents = floorPlanService.findImageById();

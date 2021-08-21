@@ -99,10 +99,11 @@ public class floorPlanService {
         return floorPlanRepository.findAll();
     }
 
+    //data for test
     public String findImageById()
     {
         String path;
-        path = "@Users@moon@Desktop@FloorPlan@인천본부_고양향동S-2BL(공임리츠)@평면-고양S2-74A-0623.json";
+        path = "@home@ec2-user@FloorPlan@인천본부_고양향동S-2BL(공임리츠)@평면-고양S2-74A-0623.json";
         path = path.replace("@","/");
         return floorPlanJsonFileReader(path);
     }

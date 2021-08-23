@@ -18,8 +18,8 @@ public class door {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doorId;
     @Column(nullable = true)
-    private KU.GraduationProject.BasicServer.domain.entity.floorPlans.doors.doorType doorType;
-    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot.class)
+    private doorType doorType;
+    @ManyToOne(targetEntity = wallPlot.class)
     @JoinColumn(name = "wallPlotId")
     private wallPlot wallPlot;
 }

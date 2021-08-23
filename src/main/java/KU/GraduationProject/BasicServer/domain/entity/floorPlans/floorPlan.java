@@ -21,14 +21,14 @@ public class floorPlan{
     @Column
     private boolean isValid;
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    @Column(columnDefinition = "LONGBLOB",nullable=true)
     private byte[] image;
     @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.district.area.class)
     @JoinColumn(name = "areaId")
     private area area;
 
     public floorPlan(boolean isValid,byte[] image,area area){
-        this.isValid = isValid;
+        this.isValid = true;
         this.image = image;
         this.area = area;
 

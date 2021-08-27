@@ -18,12 +18,12 @@ public class floorPlan{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long floorPlanId;
-    @Column
+    @Column(nullable = false)
     private boolean isValid;
     @Lob
     @Column(columnDefinition = "LONGBLOB",nullable=true)
     private byte[] image;
-    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.district.area.class)
+    @ManyToOne(targetEntity = area.class)
     @JoinColumn(name = "areaId")
     private area area;
 

@@ -17,7 +17,7 @@ public class area {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long areaId;
-    @Column
+    @Column(nullable = false)
     private String name;
     @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.district.city.class)
     @JoinColumn(name = "cityId")

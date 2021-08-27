@@ -19,11 +19,11 @@ public class point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pointId;
-    @Column
+    @Column(nullable = false)
     private double x;
-    @Column
+    @Column(nullable = false)
     private double y;
-    @Column
+    @Column(nullable = false)
     private double thickness;
     @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.doors.door.class)
     @JoinColumn(name = "doorId", nullable = true)
@@ -31,9 +31,9 @@ public class point {
     @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.walls.wall.class)
     @JoinColumn(name = "wallId", nullable = true)
     private wall wall;
-    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.window.class)
-    @JoinColumn(name = "windowId", nullable = true)
-    private window window;
+//    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.window.class)
+//    @JoinColumn(name = "windowId", nullable = true)
+//    private window window;
 
 
 }

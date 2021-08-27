@@ -5,6 +5,9 @@ import KU.GraduationProject.BasicServer.domain.repository.userRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,25 +16,15 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class userService {
+public class userService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(userService.class);
     private final userRepositoryImpl userRepository;
 
-    public Long save(user user){
-        userRepository.save(user);
-        return user.getUserId();
-    }
-
-    public List<user> findAll(){
-        List<user> users = new ArrayList<user>();
-        try{
-            users = userRepository.findAll();
-        }
-        catch(Exception ex){
-            log.error(ex.getMessage());
-        }
-        return users;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
     public Optional<user> findById(Long id){
@@ -45,10 +38,10 @@ public class userService {
         return user;
     }
 
-    public Optional<user> findByUserName(String userName){
+    public Optional<user> findByEmail(String userName){
         Optional<user> user = Optional.empty();
         try{
-            user = userRepository.findByUserName(userName);
+            user = userRepository.findByEmail(userName);
         }
         catch(Exception ex){
             log.error(ex.getMessage());
@@ -60,7 +53,6 @@ public class userService {
         checkIsUserExist(userId);
         try{
             Optional<user> user = userRepository.findById(userId);
-            user.get().setUserName(update.getUserName());
             user.get().setPassword(update.getPassword());
             user.get().setEmail(update.getEmail());
             user.get().setBirth(update.getBirth());
@@ -88,6 +80,17 @@ public class userService {
         catch(Exception ex){
             log.error(ex.getMessage());
         }
+    }
+
+    public List<user> findAll(){
+        List<user> users = new ArrayList<user>();
+        try{
+            users = userRepository.findAll();
+        }
+        catch(Exception ex){
+            log.error(ex.getMessage());
+        }
+        return users;
     }
 
     public void deleteAll(){

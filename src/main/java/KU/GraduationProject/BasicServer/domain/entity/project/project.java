@@ -20,9 +20,9 @@ public class project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
-    @Column
+    @Column(nullable = false)
     private Date date;
-    @Column
+    @Column(nullable = false)
     private String name;
     @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.account.user.class)
     @JoinColumn(name = "userId")

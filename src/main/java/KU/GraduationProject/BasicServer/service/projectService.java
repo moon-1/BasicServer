@@ -76,7 +76,7 @@ public class projectService {
     public List<project> findByUserId(Long userId){
         List<project> projectListByUser = new ArrayList<>();
         try{
-            projectListByUser = projectRepository.findByUser_userId(userId);
+            projectListByUser = projectRepository.findByUser_id(userId);
         }
         catch(Exception ex){
             log.error(ex.getMessage());

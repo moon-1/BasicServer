@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface projectRepositoryImpl extends JpaRepository<project,Long> {
 
-    List<project> findByUser_userId(@Param(value="userId")Long userId);
+    List<project> findByUser_id(@Param(value="id")Long userId);
 
     List<project> findByFloorPlan_floorPlanId(@Param(value="floorPlanId")Long floorPlanId);
 }

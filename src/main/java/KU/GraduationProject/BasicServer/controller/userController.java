@@ -1,61 +1,83 @@
 package KU.GraduationProject.BasicServer.controller;
 
-import KU.GraduationProject.BasicServer.domain.entity.account.user;
-import KU.GraduationProject.BasicServer.domain.repository.userRepositoryImpl;
-import KU.GraduationProject.BasicServer.service.auth.jwtTokenProvider;
+import KU.GraduationProject.BasicServer.service.auth.kakaoApiProvider;
+import KU.GraduationProject.BasicServer.service.userService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.security.Principal;
+import java.text.ParseException;
+import java.util.Map;
 
 @RestController
 @Api("User Management API V1")
-@RequestMapping("/manage/users")
 @RequiredArgsConstructor
 public class userController {
 
-    private final KU.GraduationProject.BasicServer.service.userService userService;
+    private static final Logger log = LoggerFactory.getLogger(userController.class);
 
-    private final PasswordEncoder passwordEncoder;
-    private final jwtTokenProvider jwtTokenProvider;
-    private final userRepositoryImpl userRepository;
+    private final kakaoApiProvider kakaoApiProvider;
+
+    private final TokenEndpoint tokenEndpoint;
+
+    private final userService userService;
 
     @ApiOperation(value = "회원가입", notes = "회원가입 시 Id, Role은 자동생성, 이미지는 필수항목아님, 생년월일은 yyyy/mm/dd")
-    @PostMapping("/join")
-    public String join(@ModelAttribute user userData) {
-        try{
-            return userRepository.save(user.builder()
-                    .email(userData.getEmail())
-                    .password(passwordEncoder.encode(userData.getPassword()))
-                    .birth(userData.getBirth())
-                    .image(userData.getImage())
-                    .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
-                    .build()).getId().toString();
-        }
-        catch(Exception ex){
-            return "이메일, 비밀번호, 생년월일은 필수 항목 입니다.";
-        }
+    @PostMapping(value = "/oauth/token")
+    public ResponseEntity<OAuth2AccessToken> postAccessToken(
+            Principal principal,
+            @RequestParam Map<String,String> parameters
+    ) throws HttpRequestMethodNotSupportedException, ParseException {
+            return userService.joinUser(principal,parameters);
     }
 
     @ApiOperation(value = "로그인", notes = "이메일, 비밀번호만 필요")
-    @PostMapping("/login")
-    public String login(@ModelAttribute user userData) {
-        user user = new user();
-        try{
-            user = userRepository.findByEmail(userData.getEmail()).get();
-        }
-        catch(Exception ex){
-            return "사용자 계정이 존재하지 않습니다.";
-        }
-        if (!passwordEncoder.matches(userData.getPassword(), user.getPassword())) {
-            //throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-            return "잘못된 비밀번호 입니다.";
-        }
-        return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+    @GetMapping(value = "/api/me")
+    public ResponseEntity<Object> me(Principal principal) {
+        return userService.getUser(principal);
     }
+
+//    @ApiOperation(value = "회원가입", notes = "회원가입 시 Id, Role은 자동생성, 이미지는 필수항목아님, 생년월일은 yyyy/mm/dd")
+//    @PostMapping("/join")
+//    public String join(@ModelAttribute user userData) {
+//        try{
+//            return userRepository.save(user.builder()
+//                    .email(userData.getEmail())
+//                    .password(passwordEncoder.encode(userData.getPassword()))
+//                    .birth(userData.getBirth())
+//                    .image(userData.getImage())
+//                    .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
+//                    .build()).getId().toString();
+//        }
+//        catch(Exception ex){
+//            return "이메일, 비밀번호, 생년월일은 필수 항목 입니다.";
+//        }
+//    }
+//
+//    @ApiOperation(value = "로그인", notes = "이메일, 비밀번호만 필요")
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute user userData) {
+//        user user = new user();
+//        try{
+//            user = userRepository.findByEmail(userData.getEmail()).get();
+//        }
+//        catch(Exception ex){
+//            return "사용자 계정이 존재하지 않습니다.";
+//        }
+//        if (!passwordEncoder.matches(userData.getPassword(), user.getPassword())) {
+//            //throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+//            return "잘못된 비밀번호 입니다.";
+//        }
+//        return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+//    }
 //
 //    @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
 //    @GetMapping("/admin")

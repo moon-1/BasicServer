@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.config;
+package KU.GraduationProject.BasicServer.config.oauth;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

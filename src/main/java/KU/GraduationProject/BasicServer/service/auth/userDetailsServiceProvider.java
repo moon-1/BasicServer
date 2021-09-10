@@ -19,7 +19,6 @@ public class userDetailsServiceProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        // ..TODO DB 처리
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 authentication.getName(),
                 null,

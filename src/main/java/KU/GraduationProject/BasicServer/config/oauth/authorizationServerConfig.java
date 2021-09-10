@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.config;
+package KU.GraduationProject.BasicServer.config.oauth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

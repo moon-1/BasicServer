@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.config;
+package KU.GraduationProject.BasicServer.config.oauth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

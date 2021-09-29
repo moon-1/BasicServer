@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface uploadImageFileInfoRepository extends JpaRepository<imageFile,Long> {
 
-    List<imageFile> findAllById(Long id);
+    List<imageFile> findAllByImageFileId(Long id);
 
     Optional<imageFile> findByFileName(String fileName);
 }

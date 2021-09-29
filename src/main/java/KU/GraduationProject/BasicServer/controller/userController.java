@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.controller;
 
-import KU.GraduationProject.BasicServer.domain.entity.account.user;
+import KU.GraduationProject.BasicServer.dto.loginDto;
 import KU.GraduationProject.BasicServer.dto.userDto;
 import KU.GraduationProject.BasicServer.service.userService;
 import javassist.bytecode.DuplicateMemberException;
@@ -16,7 +16,8 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api")
 public class userController {
-    private final KU.GraduationProject.BasicServer.service.userService userService;
+
+    private final userService userService;
 
     public userController(userService userService) {
         this.userService = userService;
@@ -39,15 +40,20 @@ public class userController {
         return userService.signup(userDto);
     }
 
+    @PostMapping("/authenticate")
+    public ResponseEntity<Object> authorize(@Valid @RequestBody loginDto loginDto) {
+       return userService.accessTokenProvider(loginDto);
+    }
+
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<user> getMyUserInfo(HttpServletRequest request) {
-        return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
+    public ResponseEntity<Object> getMyUserInfo(HttpServletRequest request) {
+        return userService.getMyUserWithAuthorities();
     }
 
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<user> getUserInfo(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
+    public ResponseEntity<Object> getUserInfo(@PathVariable String username) {
+        return userService.getUserWithAuthorities(username);
     }
 }

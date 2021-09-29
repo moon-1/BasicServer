@@ -20,21 +20,25 @@ public class project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
+
     @Column(nullable = false)
     private Date date;
+
     @Column(nullable = false)
     private String name;
-//    //@ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.account.user.class)
-//    //@JoinColumn(name = "userId")
-//    private user user;
+
+    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.account.user.class)
+    @JoinColumn(name = "userId")
+    private user user;
+
     @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan.class)
     @JoinColumn(name = "floorPlanId")
     private floorPlan floorPlan;
 
-    public project(Date date, String name,floorPlan floorPlan){
+    public project(Date date, String name,user user,floorPlan floorPlan){
         this.date = date;
         this.name = name;
-        //this.user = user;
+        this.user = user;
         this.floorPlan = floorPlan;
     }
 

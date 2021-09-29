@@ -1,5 +1,7 @@
 package KU.GraduationProject.BasicServer.domain.entity.project;
 
+import KU.GraduationProject.BasicServer.domain.entity.account.user;
+import KU.GraduationProject.BasicServer.domain.entity.district.city;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,7 @@ public class imageFile {
     @Id
     @GeneratedValue
     @Column
-    private Long id;
+    private Long imageFileId;
 
     @Column
     private String fileName;
@@ -28,5 +30,9 @@ public class imageFile {
 
     @Column
     private Long size;
+
+    @ManyToOne(targetEntity = user.class)
+    @JoinColumn(name = "userId")
+    private user user;
 
 }

@@ -49,7 +49,6 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
 
                 .exceptionHandling()
@@ -62,7 +61,6 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions()
                 .sameOrigin()
 
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

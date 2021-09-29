@@ -17,6 +17,6 @@ import javax.persistence.Table;
 public class authority {
 
     @Id
-    @Column(name = "authority_name", length = 50)
+    @Column(length = 50)
     private String authorityName;
 }

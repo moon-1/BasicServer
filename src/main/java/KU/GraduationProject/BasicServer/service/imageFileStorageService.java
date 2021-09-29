@@ -88,7 +88,7 @@ public class imageFileStorageService {
 
     public ResponseEntity<Object> downloadFiles(Long id){
         try {
-            List<imageFile> imageFiles = imageFileRepository.findAllById(id);
+            List<imageFile> imageFiles = imageFileRepository.findAllByImageFileId(id);
 
             if(imageFiles==null){
                 return new ResponseEntity(defaultResult.res(statusCode.DB_ERROR, responseMessage.DB_ERROR),

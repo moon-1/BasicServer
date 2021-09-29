@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class furnitureService {
 
-    private static final Logger log = LoggerFactory.getLogger(projectService.class);
+    private static final Logger log = LoggerFactory.getLogger(furnitureService.class);
 
     private final furnitureRepositoryImpl furnitureRepository;
 

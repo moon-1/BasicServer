@@ -1,67 +1,46 @@
 package KU.GraduationProject.BasicServer.domain.entity.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Data
-@Entity(name="user")
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class user implements UserDetails {
+public class user{
 
+    @JsonIgnore
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false, unique = true)
+    private Long userId;
+
+    @Column(length = 50, unique = true)
     private String email;
-    @Column(nullable = false)
+
+    @JsonIgnore
+    @Column(length = 100)
     private String password;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-    @Column(nullable = false)
+
+    @Column(length = 50)
+    private String nickname;
+
+    @Column
     private Date birth;
-    @Lob
-    @Column(columnDefinition = "LONGBLOB", nullable = true)
-    private byte[] image;
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-    @Override
-    public String getUsername() {
-        return email;
-    }
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    @JsonIgnore
+    @Column
+    private boolean activated;
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<authority> authorities;
 
 }

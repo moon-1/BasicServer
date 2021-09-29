@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.domain.entity.response;
+package KU.GraduationProject.BasicServer.dto.response;
 
 
 import lombok.AllArgsConstructor;

@@ -1,70 +1,53 @@
 package KU.GraduationProject.BasicServer.controller;
 
+import KU.GraduationProject.BasicServer.domain.entity.account.user;
+import KU.GraduationProject.BasicServer.dto.userDto;
 import KU.GraduationProject.BasicServer.service.userService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javassist.bytecode.DuplicateMemberException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.text.ParseException;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
-@Api("User Management API V1")
-@RequiredArgsConstructor
+@RequestMapping("/api")
 public class userController {
+    private final KU.GraduationProject.BasicServer.service.userService userService;
 
-    private static final Logger log = LoggerFactory.getLogger(userController.class);
-
-    private final userService userService;
-
-    @ApiOperation(value = "회원가입", notes = "회원가입 시 Id, Role은 자동생성, 이미지는 필수항목아님, 생년월일은 yyyy/mm/dd")
-    @PostMapping(value = "/oauth/token")
-    public ResponseEntity<OAuth2AccessToken> postAccessToken(
-            Principal principal,
-            @RequestParam Map<String,String> parameters
-    ) throws HttpRequestMethodNotSupportedException, ParseException {
-            return userService.joinUser(principal,parameters);
+    public userController(userService userService) {
+        this.userService = userService;
     }
 
-    @ApiOperation(value = "로그인", notes = "토큰으로 요청")
-    @GetMapping(value = "/api/me")
-    public ResponseEntity<Object> me(Principal principal) {
-        return userService.getUser(principal);
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("hello");
     }
 
-//    @ApiOperation(value = "사용자 목록", notes = "회원 전체 목록을 반환함")
-//    @GetMapping("/admin")
-//    public List<user> findAll(){
-//        return userService.findAll();
-//    }
-//
-//    @ApiOperation(value = "사용자 정보", notes = "사용자에 대한 상세 정보")
-//    @GetMapping("/{userId}")
-//    public user findById(@PathVariable Long userId){
-//        return userService.findById(userId).get();
-//    }
-//
-//    @ApiOperation(value = "회원 정보 수정", notes = "사용자 정보 수정, 출생년도의 경우 'yyyy/mm/dd' 포맷으로 입력")
-//    @PostMapping("/{userId}/edit")
-//    public String editById(@PathVariable Long userId, @ModelAttribute user user) {
-//        userService.editById(userId, user);
-//        return "edit user : [" + userId + "]";
-//    }
-//
-//    @ApiOperation(value = "탈퇴", notes = "사용자 정보 삭제")
-//    @DeleteMapping("/{userId}/delete")
-//    public String deleteById(@PathVariable("userId") Long userId, Model model){
-//        userService.deleteById(userId);
-//        List<user> users = userService.findAll();
-//        model.addAttribute("users",users);
-//        return "delete user : [" + userId + "]" ;
-//    }
+    @PostMapping("/test-redirect")
+    public void testRedirect(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/api/user");
+    }
 
+    @PostMapping("/signup")
+    public ResponseEntity<Object> signup(
+            @Valid @RequestBody userDto userDto
+    ) throws DuplicateMemberException {
+        return userService.signup(userDto);
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<user> getMyUserInfo(HttpServletRequest request) {
+        return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
+    }
+
+    @GetMapping("/user/{username}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<user> getUserInfo(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
+    }
 }

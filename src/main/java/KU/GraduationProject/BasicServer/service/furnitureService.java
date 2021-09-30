@@ -1,7 +1,6 @@
 package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
-import KU.GraduationProject.BasicServer.domain.repository.furnitureRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,7 @@ public class furnitureService {
 
     private static final Logger log = LoggerFactory.getLogger(furnitureService.class);
 
-    private final furnitureRepositoryImpl furnitureRepository;
+    private final KU.GraduationProject.BasicServer.domain.repository.furnitureRepository furnitureRepository;
 
     public List<furniture> findAll(){
         List<furniture> furnitureList = new ArrayList<>();

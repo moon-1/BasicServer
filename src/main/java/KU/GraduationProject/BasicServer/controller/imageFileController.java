@@ -32,12 +32,9 @@ public class imageFileController {
 
     private final KU.GraduationProject.BasicServer.service.imageFileStorageService imageFileStorageService;
 
-    //private final uploadImageFileInfoRepository uploadImageFileInfoRepository;
-
     @ApiOperation(value = "이미지 업로드", notes = "도면 이미지 업로드 ")
     @PostMapping("/post/uploadFile")
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file){
-
         return imageFileStorageService.storeFile(file);
     }
 
@@ -52,10 +49,7 @@ public class imageFileController {
     @ApiOperation(value = "도면 이미지 데이터 받기", notes= "id를 통해 이미지 다운로드 URL 얻기")
     @GetMapping("/post/{id}/files")
     public ResponseEntity<Object> downloadFilesInfo(@PathVariable Long id){
-
         return imageFileStorageService.downloadFiles(id);
-//        return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.DOWNLOAD_SUCCESS,
-//                imageFileStorageService.downloadFiles(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "도면 이미지 다운로드", notes= "URL을 통해 이미지 다운로드")

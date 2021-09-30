@@ -2,8 +2,6 @@ package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.district.area;
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan;
-import KU.GraduationProject.BasicServer.domain.repository.areaRepositoryImpl;
-import KU.GraduationProject.BasicServer.domain.repository.floorPlanRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +22,9 @@ public class floorPlanService {
 
     private static final Logger log = LoggerFactory.getLogger(floorPlanService.class);
 
-    private final floorPlanRepositoryImpl floorPlanRepository;
+    private final KU.GraduationProject.BasicServer.domain.repository.floorPlanRepository floorPlanRepository;
 
-    private final areaRepositoryImpl areaRepository;
+    private final KU.GraduationProject.BasicServer.domain.repository.areaRepository areaRepository;
 
     public List<floorPlan> findAll(){
         List<floorPlan> floorPlan = new ArrayList<floorPlan>();

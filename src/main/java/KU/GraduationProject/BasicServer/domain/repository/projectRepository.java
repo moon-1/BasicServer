@@ -1,10 +1,10 @@
 package KU.GraduationProject.BasicServer.domain.repository;
 
-import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
+import KU.GraduationProject.BasicServer.domain.entity.project.project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface furnitureRepositoryImpl extends JpaRepository<furniture,Long> {
+public interface projectRepository extends JpaRepository<project,Long> {
 
 }

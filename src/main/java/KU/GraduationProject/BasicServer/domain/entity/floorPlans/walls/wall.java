@@ -1,6 +1,6 @@
 package KU.GraduationProject.BasicServer.domain.entity.floorPlans.walls;
 
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot3D;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +20,8 @@ public class wall {
     private Long wallId;
     @Column
     private wallType wallType;
-    @ManyToOne(targetEntity = wallPlot.class)
-    @JoinColumn(name = "wallPlotId")
-    private wallPlot wallPlot;
+    @ManyToOne(targetEntity = wallPlot3D.class)
+    @JoinColumn(name = "wallPlot3DId")
+    private wallPlot3D wallPlot3D;
 
 }

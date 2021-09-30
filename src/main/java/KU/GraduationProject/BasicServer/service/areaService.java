@@ -2,8 +2,8 @@ package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.district.area;
 import KU.GraduationProject.BasicServer.domain.entity.district.city;
-import KU.GraduationProject.BasicServer.domain.repository.areaRepositoryImpl;
-import KU.GraduationProject.BasicServer.domain.repository.cityRepositoryImpl;
+import KU.GraduationProject.BasicServer.domain.repository.areaRepository;
+import KU.GraduationProject.BasicServer.domain.repository.cityRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,9 @@ public class areaService {
 
     private static final Logger log = LoggerFactory.getLogger(areaService.class);
 
-    private final areaRepositoryImpl areaManageRepository;
+    private final areaRepository areaManageRepository;
 
-    private final cityRepositoryImpl cityManageRepository;
+    private final cityRepository cityManageRepository;
 
     public List<area> findAll(){
         List<area> area = new ArrayList<>();

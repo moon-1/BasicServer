@@ -87,7 +87,7 @@ public class userService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(jwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.ACCESSTOKEN_SUCCESS,new tokenDto(jwt)), HttpStatus.OK);
+        return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.ACCESS_TOKEN_SUCCESS,new tokenDto(jwt)), HttpStatus.OK);
 
     }
 

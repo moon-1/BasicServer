@@ -2,11 +2,13 @@ package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
+import KU.GraduationProject.BasicServer.domain.repository.userRepository;
 import KU.GraduationProject.BasicServer.dto.fileStorageProperties;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
 import KU.GraduationProject.BasicServer.dto.response.statusCode;
 import KU.GraduationProject.BasicServer.dto.imageFileDto;
+import KU.GraduationProject.BasicServer.util.securityUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +36,9 @@ public class imageFileStorageService {
     private static final Logger log = LoggerFactory.getLogger(imageFileStorageService.class);
 
     private final Path fileStorageLocation;
+
+    @Autowired
+    private userRepository userRepository;
 
     @Autowired
     private uploadImageFileInfoRepository imageFileRepository;
@@ -67,16 +70,20 @@ public class imageFileStorageService {
                     .path(fileName)
                     .toUriString();
 
+            var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+
             imageFile imageFile = new imageFile();
             imageFile.setFileName(fileName);
             imageFile.setFileDownloadUri(fileDownloadUri);
             imageFile.setFileType(file.getContentType());
             imageFile.setSize(file.getSize());
+            imageFile.setUser(userInfo.get());
 
             imageFileRepository.save(imageFile);
 
             return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.UPLOAD_SUCCESS,
-                    new imageFileDto(fileName,fileDownloadUri,file.getContentType(),file.getSize())
+                    new imageFileDto(fileName,fileDownloadUri,file.getContentType(),file.getSize(),
+                            imageFileRepository.findByFileName(fileName).get().getImageFileId())
             ), HttpStatus.OK);
 
         } catch (IOException e) {
@@ -88,22 +95,30 @@ public class imageFileStorageService {
 
     public ResponseEntity<Object> downloadFiles(Long id){
         try {
-            List<imageFile> imageFiles = imageFileRepository.findAllByImageFileId(id);
+            var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
 
-            if(imageFiles==null){
-                return new ResponseEntity(defaultResult.res(statusCode.DB_ERROR, responseMessage.DB_ERROR),
+            imageFile imageFile = imageFileRepository.findByImageFileId(id).get();
+
+            if(imageFile==null){
+                return new ResponseEntity(defaultResult.res(statusCode.DB_ERROR, responseMessage.DB_ERROR, "Image file id :"+ id),
                         HttpStatus.OK);
             }
-            List<imageFileDto> files = imageFiles.stream().map(fileInfo -> new imageFileDto(
-                    fileInfo.getFileName(), fileInfo.getFileDownloadUri(),
-                    fileInfo.getFileType(), fileInfo.getSize())
-            ).collect(Collectors.toList());
-            if(files==null){
+            if(imageFile.getUser() != userInfo.get()){
+                return new ResponseEntity(defaultResult.res(statusCode.FORBIDDEN, responseMessage.FORBIDDEN_IMAGE, "Image file id :"+ id),
+                        HttpStatus.OK);
+            }
+
+            imageFileDto imageFileDto =  new imageFileDto(
+                    imageFile.getFileName(), imageFile.getFileDownloadUri(),
+                    imageFile.getFileType(), imageFile.getSize(),
+                    imageFileRepository.findByFileName(imageFile.getFileName()).get().getImageFileId());
+
+            if(imageFileDto==null){
                 return new ResponseEntity(defaultResult.res(statusCode.NOT_FOUND, responseMessage.IMAGE_NOT_FOUND),
                         HttpStatus.OK);
             }
             return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.DOWNLOAD_SUCCESS,
-                    files), HttpStatus.OK);
+                    imageFileDto), HttpStatus.OK);
         }
         catch(Exception e){
             log.error(e.getMessage());

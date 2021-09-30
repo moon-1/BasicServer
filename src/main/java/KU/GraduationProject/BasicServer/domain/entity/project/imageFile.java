@@ -1,7 +1,6 @@
 package KU.GraduationProject.BasicServer.domain.entity.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
-import KU.GraduationProject.BasicServer.domain.entity.district.city;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

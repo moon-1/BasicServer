@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@Entity(name="furniture3D")
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

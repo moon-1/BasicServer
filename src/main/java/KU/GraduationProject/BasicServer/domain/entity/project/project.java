@@ -1,7 +1,7 @@
 package KU.GraduationProject.BasicServer.domain.entity.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,13 +11,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@Entity(name ="project")
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class project {
 
+    @JsonIgnore
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
 
@@ -27,19 +29,19 @@ public class project {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.account.user.class)
+    @ManyToOne(targetEntity = user.class)
     @JoinColumn(name = "userId")
     private user user;
 
-    @ManyToOne(targetEntity = KU.GraduationProject.BasicServer.domain.entity.floorPlans.floorPlan.class)
-    @JoinColumn(name = "floorPlanId")
-    private floorPlan floorPlan;
+    @ManyToOne(targetEntity = imageFile.class)
+    @JoinColumn(name = "imageFileId")
+    private imageFile imageFile;
 
-    public project(Date date, String name,user user,floorPlan floorPlan){
+    public project(Date date, String name,user user,imageFile imageFile){
         this.date = date;
         this.name = name;
         this.user = user;
-        this.floorPlan = floorPlan;
+        this.imageFile = imageFile;
     }
 
 }

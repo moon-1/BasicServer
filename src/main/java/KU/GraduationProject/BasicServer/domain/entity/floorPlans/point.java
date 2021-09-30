@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@Entity(name = "point")
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

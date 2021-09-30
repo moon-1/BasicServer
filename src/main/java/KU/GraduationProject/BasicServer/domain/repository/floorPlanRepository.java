@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface floorPlanRepositoryImpl extends JpaRepository<floorPlan,Long> {
+public interface floorPlanRepository extends JpaRepository<floorPlan,Long> {
 
     List<floorPlan> findByArea_areaId(@Param(value="areaId")Long areaId);
 

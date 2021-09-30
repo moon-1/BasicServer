@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface areaRepositoryImpl extends JpaRepository<area,Long> {
+public interface areaRepository extends JpaRepository<area,Long> {
 
     Optional<area> findByName(String name);
 

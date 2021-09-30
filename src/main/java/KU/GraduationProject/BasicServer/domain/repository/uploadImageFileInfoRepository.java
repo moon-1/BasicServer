@@ -13,4 +13,6 @@ public interface uploadImageFileInfoRepository extends JpaRepository<imageFile,L
     List<imageFile> findAllByImageFileId(Long id);
 
     Optional<imageFile> findByFileName(String fileName);
+
+    Optional<imageFile> findByImageFileId(Long id);
 }

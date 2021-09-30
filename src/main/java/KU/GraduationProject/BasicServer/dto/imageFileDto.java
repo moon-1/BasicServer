@@ -16,4 +16,6 @@ public class imageFileDto {
     private String fileType;
 
     private long size;
+
+    private long imageFileId;
 }

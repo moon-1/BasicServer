@@ -11,7 +11,7 @@ public class responseMessage {
     public static final String UPDATE_USER = "회원 정보 수정 성공";
     public static final String DELETE_USER = "회원 탈퇴 성공";
     public static final String DUPLICATED_USER = "이미 존재하는 계정입니다.";
-    public static final String ACCESSTOKEN_SUCCESS = "토큰 발급 성공";
+    public static final String ACCESS_TOKEN_SUCCESS = "토큰 발급 성공";
     public static final String INVALID_TOKEN = "유효하지 않은 토큰입니다";
 
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
@@ -25,4 +25,7 @@ public class responseMessage {
     public static final String IMAGE_NOT_FOUND = "이미지를 찾을 수 없습니다.";
     public static final String DELETE_IMAGE = "이미지 삭제 성공";
     public static final String DUPLICATED_IMAGE = "이미 존재하는 이미지입니다.";
+    public static final String CREATED_PROJECT = "프로젝트 생성 성공";
+    public static final String FORBIDDEN_IMAGE = "사용자가 접근할 수 없는 이미지입니다.";
+
 }

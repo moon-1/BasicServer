@@ -53,7 +53,7 @@ public class projectService {
             projectRepository.save(project);
 
             return new ResponseEntity(defaultResult.res(statusCode.OK,
-                    responseMessage.CREATED_PROJECT,projectDto.getTitle() + " : " + project.getDate()), HttpStatus.OK);
+                    responseMessage.CREATED_PROJECT,"project name : " + projectDto.getTitle() + " [ " + project.getDate() + " ] "), HttpStatus.OK);
 
         }catch(Exception ex){
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,

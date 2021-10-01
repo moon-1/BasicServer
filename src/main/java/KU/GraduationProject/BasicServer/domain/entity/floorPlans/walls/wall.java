@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@Entity(name = "wall")
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

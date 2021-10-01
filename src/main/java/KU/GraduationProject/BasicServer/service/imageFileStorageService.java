@@ -62,7 +62,7 @@ public class imageFileStorageService {
 
         try{
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(),targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(),targetLocation,StandardCopyOption.REPLACE_EXISTING);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/post")

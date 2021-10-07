@@ -16,9 +16,15 @@ import javax.persistence.*;
 public class wallPlot3D {
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wallPlot3DId;
+
     @ManyToOne(targetEntity = imageFile.class)
-    @JoinColumn(name = "imageFileId")
+    @JoinColumn(name = "imageFileId", nullable = false)
     private imageFile imageFile;
+
+    public wallPlot3D(imageFile imageFile){
+        this.imageFile = imageFile;
+    }
 }

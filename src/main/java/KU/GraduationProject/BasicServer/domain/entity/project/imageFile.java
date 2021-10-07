@@ -1,14 +1,14 @@
 package KU.GraduationProject.BasicServer.domain.entity.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class imageFile {

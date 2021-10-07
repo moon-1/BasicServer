@@ -3,6 +3,7 @@ package KU.GraduationProject.BasicServer.controller;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
 import KU.GraduationProject.BasicServer.dto.response.statusCode;
+import KU.GraduationProject.BasicServer.service.imageFileHandlingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +31,12 @@ public class imageFileController {
 
     private static final Logger logger = LoggerFactory.getLogger(imageFileController.class);
 
-    private final KU.GraduationProject.BasicServer.service.imageFileStorageService imageFileStorageService;
+    private final imageFileHandlingService imageFileHandlingService;
 
     @ApiOperation(value = "이미지 업로드", notes = "도면 이미지 업로드 ")
     @PostMapping("/post/uploadFile")
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file){
-        return imageFileStorageService.storeFile(file);
+        return imageFileHandlingService.storeFile(file);
     }
 
     @PostMapping("/post/uploadMultipleFiles")
@@ -49,13 +50,13 @@ public class imageFileController {
     @ApiOperation(value = "도면 이미지 데이터 받기", notes= "id를 통해 이미지 다운로드 URL 얻기")
     @GetMapping("/post/{id}/files")
     public ResponseEntity<Object> downloadFilesInfo(@PathVariable Long id){
-        return imageFileStorageService.downloadFiles(id);
+        return imageFileHandlingService.downloadFiles(id);
     }
 
     @ApiOperation(value = "도면 이미지 다운로드", notes= "URL을 통해 이미지 다운로드")
     @GetMapping("/post/downloadFile/{fileName:.+}")
     public ResponseEntity<Object> downloadFile(@PathVariable String fileName, HttpServletRequest request){
-        Resource resource = imageFileStorageService.loadFileAsResource(fileName);
+        Resource resource = imageFileHandlingService.loadFileAsResource(fileName);
         String contentType = null;
         try{
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());

@@ -5,6 +5,7 @@ import KU.GraduationProject.BasicServer.domain.entity.project.project;
 import KU.GraduationProject.BasicServer.domain.repository.projectRepository;
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
 import KU.GraduationProject.BasicServer.domain.repository.userRepository;
+import KU.GraduationProject.BasicServer.dto.createdProjectDto;
 import KU.GraduationProject.BasicServer.dto.projectDto;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
@@ -36,7 +37,7 @@ public class projectService {
             var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
             imageFile imageFile = imageFileRepository.findById(projectDto.getImageFileId()).get();
             if(imageFile==null){
-                return new ResponseEntity(defaultResult.res(statusCode.NOT_FOUND, responseMessage.IMAGE_NOT_FOUND, "project name :"+ projectDto.getTitle()),
+                return new ResponseEntity(defaultResult.res(statusCode.NOT_FOUND, responseMessage.IMAGE_NOT_FOUND, "project name :"+ projectDto.getName()),
                         HttpStatus.OK);
             }
             else if(imageFile.getUser() != userInfo.get()){
@@ -45,15 +46,17 @@ public class projectService {
             }
             project project = KU.GraduationProject.BasicServer.domain.entity.project.project.builder()
                     .date(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
-                    .name(projectDto.getTitle())
+                    .name(projectDto.getName())
                     .imageFile(imageFile)
                     .user(userInfo.get())
                     .build();
 
             projectRepository.save(project);
 
+            createdProjectDto responseDto = new createdProjectDto(project.getName(),project.getDate());
+
             return new ResponseEntity(defaultResult.res(statusCode.OK,
-                    responseMessage.CREATED_PROJECT,"project name : " + projectDto.getTitle() + " [ " + project.getDate() + " ] "), HttpStatus.OK);
+                    responseMessage.CREATED_PROJECT,responseDto), HttpStatus.OK);
 
         }catch(Exception ex){
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,

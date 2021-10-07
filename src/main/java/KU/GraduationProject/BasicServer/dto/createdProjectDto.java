@@ -11,13 +11,12 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class projectDto {
+public class createdProjectDto {
 
     @NotNull
     @Size(min = 1, max = 50)
     private String name;
 
-    @NotNull
-    private Long imageFileId;
+    private Date createdTime;
 
 }

@@ -1,8 +1,10 @@
 package KU.GraduationProject.BasicServer.service;
 
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot3D;
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
 import KU.GraduationProject.BasicServer.domain.repository.userRepository;
+import KU.GraduationProject.BasicServer.domain.repository.wallPlot3DRepository;
 import KU.GraduationProject.BasicServer.dto.fileStorageProperties;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
@@ -30,10 +32,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-@RequiredArgsConstructor
-public class imageFileStorageService {
+public class imageFileHandlingService {
 
-    private static final Logger log = LoggerFactory.getLogger(imageFileStorageService.class);
+    private static final Logger log = LoggerFactory.getLogger(imageFileHandlingService.class);
 
     private final Path fileStorageLocation;
 
@@ -43,8 +44,11 @@ public class imageFileStorageService {
     @Autowired
     private uploadImageFileInfoRepository imageFileRepository;
 
+//    @Autowired
+//    private wallPlot3DRepository wallPlot3DRepository;
+
     @Autowired
-    public imageFileStorageService(fileStorageProperties fileStorageProperties){
+    public imageFileHandlingService(fileStorageProperties fileStorageProperties){
 
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
@@ -80,6 +84,7 @@ public class imageFileStorageService {
             imageFile.setUser(userInfo.get());
 
             imageFileRepository.save(imageFile);
+            //saveWallPlot3D(imageFile);
 
             return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.UPLOAD_SUCCESS,
                     new imageFileDto(fileName,fileDownloadUri,file.getContentType(),file.getSize(),
@@ -92,6 +97,15 @@ public class imageFileStorageService {
                     e.getMessage()), HttpStatus.OK);
         }
     }
+
+//    private void saveWallPlot3D(imageFile imageFile){
+//
+//        wallPlot3D wallPlot3D = new wallPlot3D();
+//        wallPlot3D.setImageFile(imageFile);
+//
+//        wallPlot3DRepository.save(wallPlot3D);
+//
+//    }
 
     public ResponseEntity<Object> downloadFiles(Long id){
         try {

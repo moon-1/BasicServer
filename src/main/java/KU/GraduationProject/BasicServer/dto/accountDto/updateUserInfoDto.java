@@ -1,5 +1,7 @@
-package KU.GraduationProject.BasicServer.dto;
+package KU.GraduationProject.BasicServer.dto.accountDto;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -12,16 +14,12 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class userDto {
-
-    @NotNull
-    @Size(min = 1, max = 50)
-    private String email;
+public class updateUserInfoDto {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Size(min = 1, max = 100)
-    private String password;
+    private String currentPassword;
 
     @NotNull
     @Size(min = 1, max = 50)

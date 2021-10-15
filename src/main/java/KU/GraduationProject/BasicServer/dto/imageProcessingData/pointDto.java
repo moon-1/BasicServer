@@ -1,6 +1,7 @@
 package KU.GraduationProject.BasicServer.dto.imageProcessingData;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Setter;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ public class pointDto{
 
     private double y;
 
+    @JsonIgnore
     private pointType pointType;
 
     public pointDto(double x, double y, pointType pointType){

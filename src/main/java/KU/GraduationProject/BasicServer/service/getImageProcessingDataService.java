@@ -2,18 +2,15 @@ package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot3D;
-import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
-import KU.GraduationProject.BasicServer.domain.repository.pointRepository;
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
 import KU.GraduationProject.BasicServer.domain.repository.wallPlot3DRepository;
-import KU.GraduationProject.BasicServer.domain.repository.wallRepository;
 import KU.GraduationProject.BasicServer.dto.imageProcessingData.contourDto;
 import KU.GraduationProject.BasicServer.dto.imageProcessingData.pointDto;
 import KU.GraduationProject.BasicServer.dto.imageProcessingData.wallDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -36,16 +33,19 @@ public class getImageProcessingDataService {
 
     private final saveImageProcessingDataService saveImageProcessingDataService;
 
+    private final getAIProcessingDataService getAIProcessingDataService;
+
     private final wallPlot3DRepository wallPlot3DRepository;
 
     private final uploadImageFileInfoRepository imageFileRepository;
 
-    public List<contourDto> getCoordinate(long imageFileId) {
+    public void getCoordinate(long imageFileId) throws JsonProcessingException {
 
         String fileName = imageFileRepository.findByImageFileId(imageFileId).get().getFileName();
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("url", directoryPath + "/" + fileName);
+        formData.add("imageFileId", Integer.toString(((int) imageFileId)));
 
         String response = WebClient.create()
                 .post()
@@ -61,7 +61,7 @@ public class getImageProcessingDataService {
 
         saveImageProcessingDataService.saveContourToDB(processingDataHandler(response),wallPlot3D);
 
-        return processingDataHandler(response);
+        //getAIProcessingDataService.getWallPlotLength(processingDataHandler(response),wallPlot3D.getWallPlot3DId());
 
     }
 

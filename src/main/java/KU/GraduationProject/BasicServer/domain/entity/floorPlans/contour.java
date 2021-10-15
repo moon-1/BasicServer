@@ -2,6 +2,7 @@ package KU.GraduationProject.BasicServer.domain.entity.floorPlans;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.walls.wallType;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import reactor.util.annotation.Nullable;
 
 import javax.persistence.*;

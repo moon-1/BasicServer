@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.dto;
+package KU.GraduationProject.BasicServer.dto.accountDto;
 
 import lombok.*;
 

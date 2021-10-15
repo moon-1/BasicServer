@@ -44,9 +44,6 @@ public class imageFileHandlingService {
     @Autowired
     private uploadImageFileInfoRepository imageFileRepository;
 
-//    @Autowired
-//    private wallPlot3DRepository wallPlot3DRepository;
-
     @Autowired
     public imageFileHandlingService(fileStorageProperties fileStorageProperties){
 
@@ -84,7 +81,6 @@ public class imageFileHandlingService {
             imageFile.setUser(userInfo.get());
 
             imageFileRepository.save(imageFile);
-            //saveWallPlot3D(imageFile);
 
             return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.UPLOAD_SUCCESS,
                     new imageFileDto(fileName,fileDownloadUri,file.getContentType(),file.getSize(),
@@ -97,15 +93,6 @@ public class imageFileHandlingService {
                     e.getMessage()), HttpStatus.OK);
         }
     }
-
-//    private void saveWallPlot3D(imageFile imageFile){
-//
-//        wallPlot3D wallPlot3D = new wallPlot3D();
-//        wallPlot3D.setImageFile(imageFile);
-//
-//        wallPlot3DRepository.save(wallPlot3D);
-//
-//    }
 
     public ResponseEntity<Object> downloadFiles(Long id){
         try {

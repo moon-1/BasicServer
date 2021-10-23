@@ -14,6 +14,7 @@ public class responseMessage {
     public static final String ACCESS_TOKEN_SUCCESS = "토큰 발급 성공";
     public static final String INVALID_TOKEN = "유효하지 않은 토큰입니다";
     public static final String WRONG_PASSWORD = "잘못된 비밀번호 입니다.";
+    public static final String CORRECT_PASSWORD = "비밀번호 인증에 성공했습니다.";
 
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
@@ -26,7 +27,12 @@ public class responseMessage {
     public static final String IMAGE_NOT_FOUND = "이미지를 찾을 수 없습니다.";
     public static final String DELETE_IMAGE = "이미지 삭제 성공";
     public static final String DUPLICATED_IMAGE = "이미 존재하는 이미지입니다.";
-    public static final String CREATED_PROJECT = "프로젝트 생성 성공";
     public static final String FORBIDDEN_IMAGE = "사용자가 접근할 수 없는 이미지입니다.";
+
+    //project api
+    public static final String CREATED_PROJECT = "프로젝트 생성 성공";
+    public static final String SHOW_PROJECT_LIST = "프로젝트 목록 조회 성공";
+    public static final String FORBIDDEN_PROJECT = "접근 권한이 없는 프로젝트입니다.";
+    public static final String DELETE_PROJECT = "프로젝트 삭제 성공";
 
 }

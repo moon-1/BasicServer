@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.dto;
+package KU.GraduationProject.BasicServer.dto.projectDto;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class projectDto {
+public class newProjectDto {
 
     @NotNull
     @Size(min = 1, max = 50)

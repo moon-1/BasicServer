@@ -43,9 +43,9 @@ public class getImageProcessingDataService {
 
         String fileName = imageFileRepository.findByImageFileId(imageFileId).get().getFileName();
 
-        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        MultiValueMap<String,String> formData = new LinkedMultiValueMap<>();
         formData.add("url", directoryPath + "/" + fileName);
-        formData.add("imageFileId", Integer.toString(((int) imageFileId)));
+        formData.add("id", Long.toString(imageFileId));
 
         String response = WebClient.create()
                 .post()
@@ -71,10 +71,13 @@ public class getImageProcessingDataService {
         Object object = gson.fromJson(processingData, Object.class);
         LinkedTreeMap<?,?> yourMap = (LinkedTreeMap<?, ?>) object;
         List<contourDto> contourList = new ArrayList<>();
-        for(int i = 0 ; i < yourMap.size() ; i++){
+        var imageFileId = yourMap.get("id");
+        LinkedTreeMap<?,?> points = (LinkedTreeMap<?,?>)yourMap.get("points");
+        for(int i = 0 ; i < points.size() ; i++){
             contourDto contour = new contourDto();
-            contour.setWall(makeWallList(((ArrayList<?>)yourMap.get(Integer.toString(i)))));
+            contour.setWall(makeWallList((ArrayList<?>)(points.get(Integer.toString(i)))));
             contourList.add(contour);
+            System.out.println(imageFileId);
         }
         return contourList;
     }

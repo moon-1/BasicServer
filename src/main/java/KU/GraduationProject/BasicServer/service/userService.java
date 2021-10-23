@@ -106,12 +106,28 @@ public class userService {
         }
     }
 
+    @Transactional
+    public ResponseEntity<Object> checkPassword(checkPasswordDto checkPasswordDto) {
+        try{
+            var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+            if(passwordEncoder.matches(checkPasswordDto.getPassword(),userInfo.get().getPassword()))
+            {
+                return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.CORRECT_PASSWORD), HttpStatus.OK);
+            }
+            return new ResponseEntity(defaultResult.res(statusCode.UNAUTHORIZED, responseMessage.WRONG_PASSWORD), HttpStatus.OK);
+        }
+        catch(Exception ex){
+            return new ResponseEntity(defaultResult.res(statusCode.BAD_REQUEST, responseMessage.INVALID_TOKEN), HttpStatus.OK);
+        }
+    }
+
     public ResponseEntity<Object> updateUserInfo(updateUserInfoDto updateUserInfoDto){
 
         try{
             var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
             if(passwordEncoder.matches(updateUserInfoDto.getCurrentPassword(),userInfo.get().getPassword()))
             {
+                userInfo.get().setPassword(passwordEncoder.encode(updateUserInfoDto.getNewPassword()));
                 userInfo.get().setNickname(updateUserInfoDto.getNickname());
                 userInfo.get().setBirth(updateUserInfoDto.getBirth());
                 userRepository.save(userInfo.get());

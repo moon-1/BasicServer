@@ -21,6 +21,11 @@ public class updateUserInfoDto {
     @Size(min = 1, max = 100)
     private String currentPassword;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
+    @Size(min = 1, max = 100)
+    private String newPassword;
+
     @NotNull
     @Size(min = 1, max = 50)
     private String nickname;

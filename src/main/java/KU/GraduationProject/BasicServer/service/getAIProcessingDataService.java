@@ -37,7 +37,6 @@ public class getAIProcessingDataService {
                 .exchange()
                 .block();
 
-
         return response.toString();
     }
 

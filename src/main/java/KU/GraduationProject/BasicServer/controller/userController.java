@@ -52,7 +52,12 @@ public class userController {
        return userService.accessTokenProvider(loginDto);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/check/password")
+    public ResponseEntity<Object> checkPassword(@Valid @RequestBody checkPasswordDto checkPasswordDto) {
+        return userService.checkPassword(checkPasswordDto);
+    }
+
+    @PutMapping("/update/userInfo")
     public ResponseEntity<Object> update(@Valid @RequestBody updateUserInfoDto updateUserInfoDto){
         return userService.updateUserInfo(updateUserInfoDto);
     }

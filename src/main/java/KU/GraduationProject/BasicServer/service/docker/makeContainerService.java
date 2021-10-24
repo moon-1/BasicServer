@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.service;
+package KU.GraduationProject.BasicServer.service.docker;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.exec.CommandLine;

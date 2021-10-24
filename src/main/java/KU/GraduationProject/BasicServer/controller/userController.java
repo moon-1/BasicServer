@@ -4,7 +4,7 @@ import KU.GraduationProject.BasicServer.dto.accountDto.checkPasswordDto;
 import KU.GraduationProject.BasicServer.dto.accountDto.loginDto;
 import KU.GraduationProject.BasicServer.dto.accountDto.updateUserInfoDto;
 import KU.GraduationProject.BasicServer.dto.accountDto.userDto;
-import KU.GraduationProject.BasicServer.service.userService;
+import KU.GraduationProject.BasicServer.service.account.userService;
 import javassist.bytecode.DuplicateMemberException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

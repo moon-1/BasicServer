@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.service;
+package KU.GraduationProject.BasicServer.service.account;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
 import org.springframework.security.core.GrantedAuthority;

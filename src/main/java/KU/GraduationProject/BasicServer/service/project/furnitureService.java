@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.service;
+package KU.GraduationProject.BasicServer.service.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
 import lombok.RequiredArgsConstructor;

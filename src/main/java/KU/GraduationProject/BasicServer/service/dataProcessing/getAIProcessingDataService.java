@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.service;
+package KU.GraduationProject.BasicServer.service.dataProcessing;
 
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
 import KU.GraduationProject.BasicServer.dto.AIProcessingDto.contourLengthDto;

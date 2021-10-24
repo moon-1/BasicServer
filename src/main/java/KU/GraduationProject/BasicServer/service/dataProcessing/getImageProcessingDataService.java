@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.service;
+package KU.GraduationProject.BasicServer.service.dataProcessing;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;

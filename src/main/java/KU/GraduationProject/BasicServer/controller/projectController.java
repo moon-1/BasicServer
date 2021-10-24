@@ -1,7 +1,6 @@
 package KU.GraduationProject.BasicServer.controller;
 
 import KU.GraduationProject.BasicServer.dto.projectDto.newProjectDto;
-import KU.GraduationProject.BasicServer.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +12,13 @@ import org.springframework.web.multipart.MultipartException;
 @RequiredArgsConstructor
 public class projectController {
 
-    private final getImageProcessingDataService getImageProcessingDataService;
+    private final KU.GraduationProject.BasicServer.service.dataProcessing.getImageProcessingDataService getImageProcessingDataService;
 
-    private final getAIProcessingDataService getAIProcessingDataService;
+    private final KU.GraduationProject.BasicServer.service.dataProcessing.getAIProcessingDataService getAIProcessingDataService;
 
-    private final projectService projectService;
+    private final KU.GraduationProject.BasicServer.service.project.projectService projectService;
 
-    private final makeContainerService makeContainerService;
+    private final KU.GraduationProject.BasicServer.service.docker.makeContainerService makeContainerService;
 
     @ExceptionHandler(MultipartException.class)
     @PostMapping("/new")

@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.service;
+package KU.GraduationProject.BasicServer.service.account;
 
 import java.util.Collections;
 
@@ -12,7 +12,6 @@ import KU.GraduationProject.BasicServer.domain.repository.userRepository;
 import KU.GraduationProject.BasicServer.jwt.jwtFilter;
 import KU.GraduationProject.BasicServer.jwt.tokenProvider;
 import KU.GraduationProject.BasicServer.util.securityUtil;
-import io.swagger.models.Response;
 import javassist.bytecode.DuplicateMemberException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

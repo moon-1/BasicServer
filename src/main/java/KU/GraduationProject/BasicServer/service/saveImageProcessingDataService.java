@@ -2,13 +2,12 @@ package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.contour;
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.point;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot3D;
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.walls.wall;
+import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.repository.*;
-import KU.GraduationProject.BasicServer.dto.imageProcessingData.contourDto;
-import KU.GraduationProject.BasicServer.dto.imageProcessingData.pointDto;
-import KU.GraduationProject.BasicServer.dto.imageProcessingData.wallDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.contourDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.pointDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.wallDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +23,10 @@ public class saveImageProcessingDataService {
 
     private final pointRepository pointRepository;
 
-    public void saveContourToDB(List<contourDto> contourList,wallPlot3D wallPlot3D){
+    public void saveContourToDB(List<contourDto> contourList, imageFile imageFile){
 
         for(contourDto contour : contourList){
-            contour saveContour = new contour(wallPlot3D);
+            contour saveContour = new contour(imageFile);
             contourRepository.save(saveContour);
 
             for(wallDto wallDto : contour.getWall()){

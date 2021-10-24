@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.dto.imageProcessingData;
+package KU.GraduationProject.BasicServer.dto.imageProcessingDto;
 
 public class wallDto{
 

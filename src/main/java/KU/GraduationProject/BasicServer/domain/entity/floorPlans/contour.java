@@ -1,6 +1,7 @@
 package KU.GraduationProject.BasicServer.domain.entity.floorPlans;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.walls.wallType;
+import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import reactor.util.annotation.Nullable;
@@ -19,11 +20,12 @@ public class contour {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contourId;
 
-    @ManyToOne(targetEntity = wallPlot3D.class)
-    @JoinColumn(name = "wallPlot3DId")
-    private wallPlot3D wallPlot3D;
+    @ManyToOne(targetEntity = imageFile.class)
+    @JoinColumn(name = "imageFileId", nullable = false)
+    private imageFile imageFile;
 
-    public contour(wallPlot3D wallPlot3D){
-        this.wallPlot3D = wallPlot3D;
+    public contour(imageFile imageFile){
+        this.imageFile = imageFile;
     }
+
 }

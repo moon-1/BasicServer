@@ -28,11 +28,14 @@ public class responseMessage {
     public static final String DELETE_IMAGE = "이미지 삭제 성공";
     public static final String DUPLICATED_IMAGE = "이미 존재하는 이미지입니다.";
     public static final String FORBIDDEN_IMAGE = "사용자가 접근할 수 없는 이미지입니다.";
+    public static final String SHOW_IMAGE_LIST = "이미지 목록 조회 성공";
+
 
     //project api
     public static final String CREATED_PROJECT = "프로젝트 생성 성공";
     public static final String SHOW_PROJECT_LIST = "프로젝트 목록 조회 성공";
     public static final String FORBIDDEN_PROJECT = "접근 권한이 없는 프로젝트입니다.";
     public static final String DELETE_PROJECT = "프로젝트 삭제 성공";
+    public static final String SAVE_MODEL = "3D 모델 업데이트 성공";
 
 }

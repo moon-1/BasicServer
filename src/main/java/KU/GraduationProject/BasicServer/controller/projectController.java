@@ -15,6 +15,8 @@ public class projectController {
 
     private final getImageProcessingDataService getImageProcessingDataService;
 
+    private final getAIProcessingDataService getAIProcessingDataService;
+
     private final projectService projectService;
 
     private final makeContainerService makeContainerService;
@@ -22,8 +24,9 @@ public class projectController {
     @ExceptionHandler(MultipartException.class)
     @PostMapping("/new")
     public ResponseEntity<Object> createNewProject(@RequestBody newProjectDto newProjectDto) throws JsonProcessingException {
+        //makeContainerService.runImageProcessingServerShellScript();
         getImageProcessingDataService.getCoordinate(newProjectDto.getImageFileId());
-        makeContainerService.runImageProcessingServerShellScript();
+        //getAIProcessingDataService.getWallPlotLength(newProjectDto.getImageFileId());
         return projectService.createProject(newProjectDto);
     }
 

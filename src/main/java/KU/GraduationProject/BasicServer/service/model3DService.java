@@ -1,0 +1,68 @@
+package KU.GraduationProject.BasicServer.service;
+
+import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
+import KU.GraduationProject.BasicServer.domain.repository.furnitureRepository;
+import KU.GraduationProject.BasicServer.domain.repository.projectRepository;
+import KU.GraduationProject.BasicServer.dto.modelDto.model3DDto;
+import KU.GraduationProject.BasicServer.dto.projectDto.furnitureDto;
+import KU.GraduationProject.BasicServer.dto.response.defaultResult;
+import KU.GraduationProject.BasicServer.dto.response.responseMessage;
+import KU.GraduationProject.BasicServer.dto.response.statusCode;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class model3DService {
+
+    private final projectRepository projectRepository;
+
+    private final furnitureRepository furnitureRepository;
+
+    public ResponseEntity<Object> save3DModel(model3DDto model3DDto){
+
+        try{
+            Long projectId = Long.valueOf(model3DDto.getProjectId().longValue());
+            for(furnitureDto furnitureDto : model3DDto.getFurnitures())
+            {
+                furniture furniture;
+                Long id = checkExistFurniture(furnitureDto,projectId);
+                if(!id.equals(0L)){
+                    furniture = furnitureRepository.findById(id).get();
+                    furniture.setX(furnitureDto.getX());
+                    furniture.setY(furnitureDto.getY());
+                }
+                else{
+                    furniture = new furniture();
+                    furniture.setProject(projectRepository.findById(projectId).get());
+                    furniture.setName(furnitureDto.getName());
+                    furniture.setX(furnitureDto.getX());
+                    furniture.setY(furnitureDto.getY());
+                }
+                furnitureRepository.save(furniture);
+            }
+            return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.SAVE_MODEL,
+                    model3DDto.getProjectId()), HttpStatus.OK);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR,
+                    ex.getMessage()), HttpStatus.OK);
+        }
+    }
+
+    private Long checkExistFurniture(furnitureDto furnitureDto,Long projectId){
+        List<furniture> furnitureList = furnitureRepository.findAllByProject_ProjectId(projectId);
+        for(furniture furniture : furnitureList){
+            if(furniture.getName().equals(furnitureDto.getName()))
+            {
+                return furniture.getFurnitureId();
+            }
+        }
+        return 0L;
+    }
+}

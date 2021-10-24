@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.dto.imageProcessingData;
+package KU.GraduationProject.BasicServer.dto.imageProcessingDto;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
 import com.fasterxml.jackson.annotation.JsonIgnore;

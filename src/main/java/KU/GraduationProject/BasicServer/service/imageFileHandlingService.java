@@ -1,17 +1,15 @@
 package KU.GraduationProject.BasicServer.service;
 
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot3D;
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
 import KU.GraduationProject.BasicServer.domain.repository.userRepository;
-import KU.GraduationProject.BasicServer.domain.repository.wallPlot3DRepository;
 import KU.GraduationProject.BasicServer.dto.fileStorageProperties;
+import KU.GraduationProject.BasicServer.dto.projectDto.imageListDto;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
 import KU.GraduationProject.BasicServer.dto.response.statusCode;
 import KU.GraduationProject.BasicServer.dto.imageFileDto;
 import KU.GraduationProject.BasicServer.util.securityUtil;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class imageFileHandlingService {
@@ -55,6 +55,25 @@ public class imageFileHandlingService {
         }catch(Exception ex){
             log.error("디렉토리를 생성하지 못 하였습니다",ex.fillInStackTrace());
         }
+    }
+
+    public ResponseEntity<Object> getImageFileList(){
+        try{
+            var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+
+            List<imageFile> imageFileList = imageFileRepository.findAllByUser_UserId(userInfo.get().getUserId());
+            List<imageListDto> imageFiles = new ArrayList<>();
+            for(imageFile imageFile : imageFileList){
+                imageFiles.add(new imageListDto(imageFile.getImageFileId(),imageFile.getFileDownloadUri()));
+            }
+            return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.SHOW_IMAGE_LIST,imageFiles), HttpStatus.OK);
+        }
+        catch (Exception ex){
+            log.error(ex.getMessage());
+            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR,
+                    ex.getMessage()), HttpStatus.OK);
+        }
+
     }
 
     public ResponseEntity<Object> storeFile(MultipartFile file){

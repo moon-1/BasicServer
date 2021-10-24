@@ -1,5 +1,7 @@
 package KU.GraduationProject.BasicServer.domain.entity.furnitures;
 
+import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
+import KU.GraduationProject.BasicServer.domain.entity.project.project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,16 +19,18 @@ public class furniture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long furnitureId;
-    @Column(nullable=false)
-    private String name;
-    @Column
-    private String url;
-    @Column(nullable = false)
-    private String furniture3DData;
 
-    public furniture(String name, String url, String furniture3DData){
-        this.name = name;
-        this.url = url;
-        this.furniture3DData = furniture3DData;
-    }
+    @Column
+    private String name;
+
+    @Column(nullable = false)
+    private double x;
+
+    @Column(nullable = false)
+    private double y;
+
+    @ManyToOne(targetEntity = project.class,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "projectId")
+    private project project;
+
 }

@@ -39,6 +39,11 @@ public class imageFileController {
         return imageFileHandlingService.storeFile(file);
     }
 
+    @GetMapping("/image/list")
+    public ResponseEntity<Object> getImageFileList(){
+        return imageFileHandlingService.getImageFileList();
+    }
+
     @PostMapping("/post/uploadMultipleFiles")
     public List<Object> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files){
         return Arrays.asList(files)

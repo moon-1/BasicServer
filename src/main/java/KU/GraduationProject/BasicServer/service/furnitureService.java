@@ -50,34 +50,11 @@ public class furnitureService {
         return furniture.getFurnitureId();
     }
 
-    public void editById(Long furnitureId, furniture update){
-        checkIsFurnitureExist(furnitureId);
-        try{
-            Optional<furniture> furniture = furnitureRepository.findById(furnitureId);
-            furniture.get().setName(update.getName());
-            furniture.get().setUrl(update.getUrl());
-            furniture.get().setFurniture3DData(update.getFurniture3DData());
-            furnitureRepository.save(furniture.get());
-        }
-        catch(Exception ex){
-            log.error(ex.getMessage());
-        }
-    }
-
     private void checkIsFurnitureExist(Long furnitureId){
         if (!furnitureRepository.existsById(furnitureId)) {
             throw new IllegalStateException("존재하지 않는 가구 입니다");
         }
     }
 
-    public void deleteById(Long furnitureId){
-        checkIsFurnitureExist(furnitureId);
-        try{
-            furnitureRepository.deleteById(furnitureId);
-        }
-        catch(Exception ex) {
-            log.error(ex.getMessage());
-        }
-    }
 
 }

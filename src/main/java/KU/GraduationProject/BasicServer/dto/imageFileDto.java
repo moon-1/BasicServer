@@ -18,4 +18,5 @@ public class imageFileDto {
     private long size;
 
     private long imageFileId;
+
 }

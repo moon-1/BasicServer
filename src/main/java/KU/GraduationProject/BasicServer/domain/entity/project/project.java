@@ -1,6 +1,7 @@
 package KU.GraduationProject.BasicServer.domain.entity.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
+import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 @Data
@@ -36,6 +38,10 @@ public class project {
     @ManyToOne(targetEntity = imageFile.class)
     @JoinColumn(name = "imageFileId")
     private imageFile imageFile;
+
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "projectId")
+//    private Collection<furniture> furniture;
 
     public project(Date date, String name,user user,imageFile imageFile){
         this.date = date;

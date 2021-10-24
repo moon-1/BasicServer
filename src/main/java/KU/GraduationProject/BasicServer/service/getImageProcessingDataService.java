@@ -1,12 +1,11 @@
 package KU.GraduationProject.BasicServer.service;
 
 import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.wallPlot3D;
+import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
-import KU.GraduationProject.BasicServer.domain.repository.wallPlot3DRepository;
-import KU.GraduationProject.BasicServer.dto.imageProcessingData.contourDto;
-import KU.GraduationProject.BasicServer.dto.imageProcessingData.pointDto;
-import KU.GraduationProject.BasicServer.dto.imageProcessingData.wallDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.contourDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.pointDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.wallDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -33,10 +32,6 @@ public class getImageProcessingDataService {
 
     private final saveImageProcessingDataService saveImageProcessingDataService;
 
-    private final getAIProcessingDataService getAIProcessingDataService;
-
-    private final wallPlot3DRepository wallPlot3DRepository;
-
     private final uploadImageFileInfoRepository imageFileRepository;
 
     public void getCoordinate(long imageFileId) throws JsonProcessingException {
@@ -57,11 +52,9 @@ public class getImageProcessingDataService {
                 .bodyToMono(String.class)
                 .block();
 
-        wallPlot3D wallPlot3D = wallPlot3DRepository.save(new wallPlot3D(imageFileRepository.findByImageFileId(imageFileId).get()));
+        imageFile imageFile = imageFileRepository.findByImageFileId(imageFileId).get();
 
-        saveImageProcessingDataService.saveContourToDB(processingDataHandler(response),wallPlot3D);
-
-        //getAIProcessingDataService.getWallPlotLength(processingDataHandler(response),wallPlot3D.getWallPlot3DId());
+        saveImageProcessingDataService.saveContourToDB(processingDataHandler(response),imageFile);
 
     }
 
@@ -69,15 +62,14 @@ public class getImageProcessingDataService {
 
         Gson gson = new Gson();
         Object object = gson.fromJson(processingData, Object.class);
-        LinkedTreeMap<?,?> yourMap = (LinkedTreeMap<?, ?>) object;
+        LinkedTreeMap<?,?> processingDataJson = (LinkedTreeMap<?, ?>) object;
         List<contourDto> contourList = new ArrayList<>();
-        var imageFileId = yourMap.get("id");
-        LinkedTreeMap<?,?> points = (LinkedTreeMap<?,?>)yourMap.get("points");
+        var imageFileId = processingDataJson.get("id");
+        LinkedTreeMap<?,?> points = (LinkedTreeMap<?,?>)processingDataJson.get("points");
         for(int i = 0 ; i < points.size() ; i++){
             contourDto contour = new contourDto();
             contour.setWall(makeWallList((ArrayList<?>)(points.get(Integer.toString(i)))));
             contourList.add(contour);
-            System.out.println(imageFileId);
         }
         return contourList;
     }

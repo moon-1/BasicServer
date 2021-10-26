@@ -1,14 +1,19 @@
 package KU.GraduationProject.BasicServer.service.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.contour;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.point;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
+import KU.GraduationProject.BasicServer.domain.entity.floorPlans.walls.wall;
+import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.entity.project.project;
-import KU.GraduationProject.BasicServer.domain.repository.projectRepository;
-import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
-import KU.GraduationProject.BasicServer.domain.repository.userRepository;
+import KU.GraduationProject.BasicServer.domain.repository.*;
+import KU.GraduationProject.BasicServer.dto.AIProcessingDto.contourLengthDto;
 import KU.GraduationProject.BasicServer.dto.createdProjectDto;
-import KU.GraduationProject.BasicServer.dto.projectDto.newProjectDto;
-import KU.GraduationProject.BasicServer.dto.projectDto.projectListDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.pointDto;
+import KU.GraduationProject.BasicServer.dto.imageProcessingDto.wallDto;
+import KU.GraduationProject.BasicServer.dto.projectDto.*;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
 import KU.GraduationProject.BasicServer.dto.response.statusCode;
@@ -34,7 +39,19 @@ public class projectService {
     private uploadImageFileInfoRepository imageFileRepository;
 
     @Autowired
+    private contourRepository contourRepository;
+
+    @Autowired
+    private wallRepository wallRepository;
+
+    @Autowired
+    private pointRepository pointRepository;
+
+    @Autowired
     private userRepository userRepository;
+
+    @Autowired
+    private furnitureRepository furnitureRepository;
 
     public ResponseEntity<Object> createProject(newProjectDto newProjectDto){
         try{
@@ -68,6 +85,55 @@ public class projectService {
         }
     }
 
+    public ResponseEntity<Object> openProject(Long projectId){
+        try{
+            project project = projectRepository.findById(projectId).get();
+            openProjectDto openProjectDto = new openProjectDto();
+
+            openProjectDto.setLengthDto(new lengthDto(10.0,10.0));
+            openProjectDto.setWall(makeWallDto(project.getImageFile().getImageFileId()));
+            openProjectDto.setFurnitures(makeFurnitureDto(projectId));
+
+            return new ResponseEntity(defaultResult.res(statusCode.OK,
+                    responseMessage.OPEN_PROJECT,openProjectDto), HttpStatus.OK);
+        }
+        catch(Exception ex){
+            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
+                    responseMessage.INTERNAL_SERVER_ERROR,ex.getMessage()), HttpStatus.OK);
+        }
+    }
+
+    private ArrayList<wallDto> makeWallDto(Long imageFileId){
+
+        ArrayList<wallDto> wallDtoList = new ArrayList<>();
+        List<contour> contourList = contourRepository.findAllByImageFile_ImageFileId(imageFileId);
+
+        for(contour contour : contourList){
+            List<wall> wallList = wallRepository.findAllByContour_ContourId(contour.getContourId());
+            for(wall wall : wallList){
+                wallDto wallDto = new wallDto();
+                List<point> pointList = pointRepository.findAllByWall_WallId(wall.getWallId());
+                wallDto.startPoint = new pointDto(pointList.get(0).getX(),pointList.get(0).getY(), pointType.start);
+                wallDto.endPoint =  new pointDto(pointList.get(1).getX(),pointList.get(1).getY(), pointType.end);
+                wallDtoList.add(wallDto);
+            }
+        }
+        return wallDtoList;
+    }
+
+    private ArrayList<furnitureDto> makeFurnitureDto(Long projectId){
+
+        ArrayList<furnitureDto> furnitureDtoList = new ArrayList<>();
+        List<furniture> furnitureList = furnitureRepository.findAllByProject_ProjectId(projectId);
+        for(furniture furniture : furnitureList){
+            furnitureDto furnitureDto = new furnitureDto();
+            furnitureDto.setName(furniture.getName());
+            furnitureDto.setX(furniture.getX());
+            furnitureDto.setY(furnitureDto.getY());
+            furnitureDtoList.add(furnitureDto);
+        }
+        return furnitureDtoList;
+    }
 
     public ResponseEntity<Object> showProjectList(){
         try{

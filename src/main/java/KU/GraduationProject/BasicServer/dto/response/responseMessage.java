@@ -37,5 +37,6 @@ public class responseMessage {
     public static final String FORBIDDEN_PROJECT = "접근 권한이 없는 프로젝트입니다.";
     public static final String DELETE_PROJECT = "프로젝트 삭제 성공";
     public static final String SAVE_MODEL = "3D 모델 업데이트 성공";
+    public static final String OPEN_PROJECT = "프로젝트 열람 성공";
 
 }

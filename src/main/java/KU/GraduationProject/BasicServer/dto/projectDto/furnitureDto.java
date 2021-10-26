@@ -11,8 +11,8 @@ public class furnitureDto {
 
     private String name;
 
-    private Long x;
+    private double x;
 
-    private Long y;
+    private double y;
 
 }

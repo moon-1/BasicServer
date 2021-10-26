@@ -34,4 +34,10 @@ public class imageFile {
     @JoinColumn(name = "userId")
     private user user;
 
+    @Column
+    private double horizontal;
+
+    @Column
+    private double vertical;
+
 }

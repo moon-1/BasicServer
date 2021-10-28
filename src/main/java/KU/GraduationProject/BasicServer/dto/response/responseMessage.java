@@ -38,5 +38,7 @@ public class responseMessage {
     public static final String DELETE_PROJECT = "프로젝트 삭제 성공";
     public static final String SAVE_MODEL = "3D 모델 업데이트 성공";
     public static final String OPEN_PROJECT = "프로젝트 열람 성공";
+    public static final String CREATE_3DMODEL_INPROGRESS = "3D 모델링 중..";
+    public static final String CREATE_3DMODEL_SUCCESS = "3D 모델 생성 성공";
 
 }

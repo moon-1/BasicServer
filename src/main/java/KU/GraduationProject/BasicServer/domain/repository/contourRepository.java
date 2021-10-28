@@ -12,4 +12,7 @@ import java.util.List;
 public interface contourRepository extends JpaRepository<contour,Long> {
 
     List<contour> findAllByImageFile_ImageFileId(@Param(value = "imageFileId") Long imageFileId);
+
+    boolean existsByImageFile_ImageFileId(@Param(value = "imageFileId") Long imageFileId);
+
 }

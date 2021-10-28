@@ -36,13 +36,13 @@ public class getImageProcessingDataService {
 
     public void getCoordinate(long imageFileId) throws JsonProcessingException {
 
-        String fileName = imageFileRepository.findByImageFileId(imageFileId).get().getFileName();
+        imageFile imageFile = imageFileRepository.findByImageFileId(imageFileId).get();
 
         MultiValueMap<String,String> formData = new LinkedMultiValueMap<>();
-        formData.add("url", directoryPath + "/" + fileName);
+        formData.add("url", imageFile.getFileDownloadUri());
         formData.add("id", Long.toString(imageFileId));
 
-        String response = WebClient.create()
+        var response = WebClient.create()
                 .post()
                 .uri(imageProcessingServerUrl)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -51,8 +51,6 @@ public class getImageProcessingDataService {
                 .block()
                 .bodyToMono(String.class)
                 .block();
-
-        imageFile imageFile = imageFileRepository.findByImageFileId(imageFileId).get();
 
         saveImageProcessingDataService.saveContourToDB(processingDataHandler(response),imageFile);
 

@@ -19,4 +19,14 @@ public class createdProjectDto {
 
     private Date createdTime;
 
+    private Object model;
+
+    private Long projectId;
+
+    public createdProjectDto(String name,Date createdTime,Object model){
+        this.name = name;
+        this.createdTime = createdTime;
+        this.model = model;
+    }
+
 }

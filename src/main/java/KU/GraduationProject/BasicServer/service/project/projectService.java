@@ -1,22 +1,17 @@
 package KU.GraduationProject.BasicServer.service.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.contour;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.point;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.points.pointType;
-import KU.GraduationProject.BasicServer.domain.entity.floorPlans.walls.wall;
-import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.entity.project.project;
 import KU.GraduationProject.BasicServer.domain.repository.*;
-import KU.GraduationProject.BasicServer.dto.AIProcessingDto.contourLengthDto;
 import KU.GraduationProject.BasicServer.dto.createdProjectDto;
-import KU.GraduationProject.BasicServer.dto.imageProcessingDto.pointDto;
-import KU.GraduationProject.BasicServer.dto.imageProcessingDto.wallDto;
 import KU.GraduationProject.BasicServer.dto.projectDto.*;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
 import KU.GraduationProject.BasicServer.dto.response.statusCode;
+import KU.GraduationProject.BasicServer.service.dataProcessing.get3DModelDataService;
+import KU.GraduationProject.BasicServer.service.dataProcessing.getImageProcessingDataService;
+import KU.GraduationProject.BasicServer.service.dataProcessing.requestAIProcessingDataService;
 import KU.GraduationProject.BasicServer.util.securityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,42 +34,57 @@ public class projectService {
     private uploadImageFileInfoRepository imageFileRepository;
 
     @Autowired
+    private get3DModelDataService get3DModelDataService;
+
+    @Autowired
     private contourRepository contourRepository;
-
-    @Autowired
-    private wallRepository wallRepository;
-
-    @Autowired
-    private pointRepository pointRepository;
 
     @Autowired
     private userRepository userRepository;
 
     @Autowired
-    private furnitureRepository furnitureRepository;
+    private getImageProcessingDataService getImageProcessingDataService;
+
+    @Autowired
+    private requestAIProcessingDataService requestAIProcessingDataService;
 
     public ResponseEntity<Object> createProject(newProjectDto newProjectDto){
         try{
             var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
             imageFile imageFile = imageFileRepository.findById(newProjectDto.getImageFileId()).get();
-            if(imageFile==null){
+            if(imageFile==null){ //존재하는 이미지 파일인지 확인
                 return new ResponseEntity(defaultResult.res(statusCode.NOT_FOUND, responseMessage.IMAGE_NOT_FOUND, "project name :"+ newProjectDto.getName()),
                         HttpStatus.OK);
             }
-            else if(imageFile.getUser() != userInfo.get()){
+            else if(imageFile.getUser() != userInfo.get()){ //사용자가 접근권한이 있는 이미지 파일인지 확인
                 return new ResponseEntity(defaultResult.res(statusCode.FORBIDDEN, responseMessage.FORBIDDEN_IMAGE, "Image file id :"+ imageFile.getImageFileId()),
                         HttpStatus.OK);
             }
+            createdProjectDto responseDto;
+            Date realTime = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+
+            //이미 모델링한 이미지일 경우
+            if(contourRepository.existsByImageFile_ImageFileId(imageFile.getImageFileId())){
+                responseDto = new createdProjectDto(newProjectDto.getName(),realTime,get3DModelDataService.get3DModel(imageFile.getImageFileId()));
+            }else{
+
+                //get ImageProcessing
+                getImageProcessingDataService.getCoordinate(newProjectDto.getImageFileId());
+
+                //get AIProcessing
+                requestAIProcessingDataService.requestWallPlotLength(newProjectDto.getImageFileId());
+
+                responseDto = new createdProjectDto(newProjectDto.getName(),realTime,"start 3D modeling...");
+            }
+
             project project = KU.GraduationProject.BasicServer.domain.entity.project.project.builder()
-                    .date(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
+                    .date(realTime)
                     .name(newProjectDto.getName())
                     .imageFile(imageFile)
                     .user(userInfo.get())
                     .build();
 
-            projectRepository.save(project);
-
-            createdProjectDto responseDto = new createdProjectDto(project.getName(),project.getDate());
+            responseDto.setProjectId(projectRepository.save(project).getProjectId());
 
             return new ResponseEntity(defaultResult.res(statusCode.OK,
                     responseMessage.CREATED_PROJECT,responseDto), HttpStatus.OK);
@@ -85,14 +95,23 @@ public class projectService {
         }
     }
 
+//    private openProjectDto get3DModel(Long imageFileId){
+//        openProjectDto openProjectDto = new openProjectDto();
+//        imageFile imageFile = imageFileRepository.getById(imageFileId);
+//        openProjectDto.setLengthDto(new lengthDto(imageFile.getHorizontal(),imageFile.getVertical()));
+//        openProjectDto.setWall(get3DModelDataService.makeWallDto(imageFileId));
+//
+//        return openProjectDto;
+//    }
+
     public ResponseEntity<Object> openProject(Long projectId){
         try{
             project project = projectRepository.findById(projectId).get();
             openProjectDto openProjectDto = new openProjectDto();
 
             openProjectDto.setLengthDto(new lengthDto(10.0,10.0));
-            openProjectDto.setWall(makeWallDto(project.getImageFile().getImageFileId()));
-            openProjectDto.setFurnitures(makeFurnitureDto(projectId));
+            openProjectDto.setWall(get3DModelDataService.makeWallDto(project.getImageFile().getImageFileId()));
+            openProjectDto.setFurnitures(get3DModelDataService.makeFurnitureDto(projectId));
 
             return new ResponseEntity(defaultResult.res(statusCode.OK,
                     responseMessage.OPEN_PROJECT,openProjectDto), HttpStatus.OK);
@@ -101,38 +120,6 @@ public class projectService {
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
                     responseMessage.INTERNAL_SERVER_ERROR,ex.getMessage()), HttpStatus.OK);
         }
-    }
-
-    private ArrayList<wallDto> makeWallDto(Long imageFileId){
-
-        ArrayList<wallDto> wallDtoList = new ArrayList<>();
-        List<contour> contourList = contourRepository.findAllByImageFile_ImageFileId(imageFileId);
-
-        for(contour contour : contourList){
-            List<wall> wallList = wallRepository.findAllByContour_ContourId(contour.getContourId());
-            for(wall wall : wallList){
-                wallDto wallDto = new wallDto();
-                List<point> pointList = pointRepository.findAllByWall_WallId(wall.getWallId());
-                wallDto.startPoint = new pointDto(pointList.get(0).getX(),pointList.get(0).getY(), pointType.start);
-                wallDto.endPoint =  new pointDto(pointList.get(1).getX(),pointList.get(1).getY(), pointType.end);
-                wallDtoList.add(wallDto);
-            }
-        }
-        return wallDtoList;
-    }
-
-    private ArrayList<furnitureDto> makeFurnitureDto(Long projectId){
-
-        ArrayList<furnitureDto> furnitureDtoList = new ArrayList<>();
-        List<furniture> furnitureList = furnitureRepository.findAllByProject_ProjectId(projectId);
-        for(furniture furniture : furnitureList){
-            furnitureDto furnitureDto = new furnitureDto();
-            furnitureDto.setName(furniture.getName());
-            furnitureDto.setX(furniture.getX());
-            furnitureDto.setY(furnitureDto.getY());
-            furnitureDtoList.add(furnitureDto);
-        }
-        return furnitureDtoList;
     }
 
     public ResponseEntity<Object> showProjectList(){

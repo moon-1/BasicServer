@@ -35,8 +35,9 @@ public class imageFileController {
 
     @ApiOperation(value = "이미지 업로드", notes = "도면 이미지 업로드 ")
     @PostMapping("/post/uploadFile")
-    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file){
-        return imageFileHandlingService.storeFile(file);
+    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        //return imageFileHandlingService.storeFile(file);
+        return imageFileHandlingService.uploadFileToS3(file);
     }
 
     @GetMapping("/image/list")
@@ -44,13 +45,13 @@ public class imageFileController {
         return imageFileHandlingService.getImageFileList();
     }
 
-    @PostMapping("/post/uploadMultipleFiles")
-    public List<Object> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files){
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file))
-                .collect(Collectors.toList());
-    }
+//    @PostMapping("/post/uploadMultipleFiles")
+//    public List<Object> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files){
+//        return Arrays.asList(files)
+//                .stream()
+//                .map(file -> uploadFile(file))
+//                .collect(Collectors.toList());
+//    }
 
     @ApiOperation(value = "도면 이미지 데이터 받기", notes= "id를 통해 이미지 다운로드 URL 얻기")
     @GetMapping("/post/{id}/files")
@@ -80,8 +81,6 @@ public class imageFileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
-
-
 
 }
 

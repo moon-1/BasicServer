@@ -1,10 +1,11 @@
 package KU.GraduationProject.BasicServer.controller;
 
 import KU.GraduationProject.BasicServer.dto.projectDto.newProjectDto;
-import KU.GraduationProject.BasicServer.dto.projectDto.wallPlotLengthDto;
+import KU.GraduationProject.BasicServer.dto.modelDto.wallPlotLengthDto;
+import KU.GraduationProject.BasicServer.dto.projectDto.saveProjectDto;
 import KU.GraduationProject.BasicServer.service.project.modelHandlingService;
-import KU.GraduationProject.BasicServer.service.project.projectService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,11 @@ public class projectController {
     public ResponseEntity<Object> createNewProject(@RequestBody newProjectDto newProjectDto) throws JsonProcessingException {
         //makeContainerService.runImageProcessingServerShellScript();
         return projectService.createProject(newProjectDto);
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<Object> saveProject(@RequestBody saveProjectDto saveProjectDto){
+        return projectService.saveProject(saveProjectDto);
     }
 
     @PostMapping("/getAIProcessingData")

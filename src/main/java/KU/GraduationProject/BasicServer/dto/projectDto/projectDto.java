@@ -1,7 +1,5 @@
 package KU.GraduationProject.BasicServer.dto.projectDto;
 
-import KU.GraduationProject.BasicServer.dto.AIProcessingDto.contourLengthDto;
-import KU.GraduationProject.BasicServer.dto.imageProcessingDto.contourDto;
 import KU.GraduationProject.BasicServer.dto.imageProcessingDto.wallDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -14,10 +12,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class openProjectDto {
+public class projectDto {
 
     @JsonProperty("length")
-    private lengthDto lengthDto;
+    private KU.GraduationProject.BasicServer.dto.modelDto.lengthDto lengthDto;
 
     @JsonProperty("wall")
     private ArrayList<wallDto> wall;

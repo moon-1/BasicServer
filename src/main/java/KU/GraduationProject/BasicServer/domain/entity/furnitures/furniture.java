@@ -29,8 +29,15 @@ public class furniture {
     @Column(nullable = false)
     private double y;
 
-    @ManyToOne(targetEntity = project.class,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = project.class,fetch = FetchType.EAGER)
     @JoinColumn(name = "projectId")
     private project project;
+
+    public furniture(String name,double x,double y,project project){
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.project = project;
+    }
 
 }

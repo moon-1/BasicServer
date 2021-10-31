@@ -10,8 +10,8 @@ import KU.GraduationProject.BasicServer.domain.repository.*;
 import KU.GraduationProject.BasicServer.dto.imageProcessingDto.pointDto;
 import KU.GraduationProject.BasicServer.dto.imageProcessingDto.wallDto;
 import KU.GraduationProject.BasicServer.dto.projectDto.furnitureDto;
-import KU.GraduationProject.BasicServer.dto.projectDto.lengthDto;
-import KU.GraduationProject.BasicServer.dto.projectDto.openProjectDto;
+import KU.GraduationProject.BasicServer.dto.modelDto.lengthDto;
+import KU.GraduationProject.BasicServer.dto.projectDto.projectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +36,13 @@ public class get3DModelDataService {
     @Autowired
     private uploadImageFileInfoRepository imageFileRepository;
 
-    public openProjectDto get3DModel(Long imageFileId){
-        openProjectDto openProjectDto = new openProjectDto();
+    public projectDto get3DModel(Long imageFileId){
+        projectDto projectDto = new projectDto();
         imageFile imageFile = imageFileRepository.getById(imageFileId);
-        openProjectDto.setLengthDto(new lengthDto(imageFile.getHorizontal(),imageFile.getVertical()));
-        openProjectDto.setWall(makeWallDto(imageFileId));
+        projectDto.setLengthDto(new lengthDto(imageFile.getHorizontal(),imageFile.getVertical()));
+        projectDto.setWall(makeWallDto(imageFileId));
 
-        return openProjectDto;
+        return projectDto;
     }
 
     public ArrayList<wallDto> makeWallDto(Long imageFileId){

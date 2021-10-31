@@ -7,7 +7,8 @@ import KU.GraduationProject.BasicServer.domain.repository.projectRepository;
 import KU.GraduationProject.BasicServer.domain.repository.uploadImageFileInfoRepository;
 import KU.GraduationProject.BasicServer.dto.modelDto.model3DDto;
 import KU.GraduationProject.BasicServer.dto.projectDto.furnitureDto;
-import KU.GraduationProject.BasicServer.dto.projectDto.wallPlotLengthDto;
+import KU.GraduationProject.BasicServer.dto.modelDto.isModelExistDto;
+import KU.GraduationProject.BasicServer.dto.modelDto.wallPlotLengthDto;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
 import KU.GraduationProject.BasicServer.dto.response.statusCode;
@@ -31,42 +32,42 @@ public class modelHandlingService {
 
     private final get3DModelDataService get3DModelDataService;
 
-    public ResponseEntity<Object> save3DModel(model3DDto model3DDto){
-
-        try{
-            Long projectId = Long.valueOf(model3DDto.getProjectId().longValue());
-            for(furnitureDto furnitureDto : model3DDto.getFurnitures())
-            {
-                furniture furniture;
-                Long id = checkExistFurniture(furnitureDto,projectId);
-                if(!id.equals(0L)){
-                    furniture = furnitureRepository.findById(id).get();
-                    furniture.setX(furnitureDto.getX());
-                    furniture.setY(furnitureDto.getY());
-                }
-                else{
-                    furniture = new furniture();
-                    furniture.setProject(projectRepository.findById(projectId).get());
-                    furniture.setName(furnitureDto.getName());
-                    furniture.setX(furnitureDto.getX());
-                    furniture.setY(furnitureDto.getY());
-                }
-                furnitureRepository.save(furniture);
-            }
-            return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.SAVE_MODEL,
-                    model3DDto.getProjectId()), HttpStatus.OK);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR,
-                    ex.getMessage()), HttpStatus.OK);
-        }
-    }
+//    public ResponseEntity<Object> save3DModel(model3DDto model3DDto){
+//
+//        try{
+//            Long projectId = Long.valueOf(model3DDto.getProjectId().longValue());
+//            for(furnitureDto furnitureDto : model3DDto.getFurnitures())
+//            {
+//                furniture furniture;
+//                Long id = checkExistFurniture(furnitureDto,projectId);
+//                if(!id.equals(0L)){
+//                    furniture = furnitureRepository.findById(id).get();
+//                    furniture.setX(furnitureDto.getX());
+//                    furniture.setY(furnitureDto.getY());
+//                }
+//                else{
+//                    furniture = new furniture();
+//                    furniture.setProject(projectRepository.findById(projectId).get());
+//                    furniture.setName(furnitureDto.getName());
+//                    furniture.setX(furnitureDto.getX());
+//                    furniture.setY(furnitureDto.getY());
+//                }
+//                furnitureRepository.save(furniture);
+//            }
+//            return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.SAVE_MODEL,
+//                    model3DDto.getProjectId()), HttpStatus.OK);
+//        }
+//        catch (Exception ex){
+//            ex.printStackTrace();
+//            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR,
+//                    ex.getMessage()), HttpStatus.OK);
+//        }
+//    }
 
     public void getWallPlotLength(wallPlotLengthDto wallPlotLengthDto){
 
         try{
-            imageFile imageFile = imageFileRepository.findByImageFileId(wallPlotLengthDto.getImageFileId()).get();
+            imageFile imageFile = imageFileRepository.findByImageFileId((long) wallPlotLengthDto.getImageFileId()).get();
             imageFile.setHorizontal(wallPlotLengthDto.getHorizontal());
             imageFile.setVertical(wallPlotLengthDto.getVertical());
             imageFileRepository.save(imageFile);
@@ -82,10 +83,11 @@ public class modelHandlingService {
             //Image Processing이 전부 완료되었다면
             if(imageFileRepository.findByImageFileId(imageFileId).get().getHorizontal() != 0) {
                 return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.CREATE_3DMODEL_SUCCESS,
-                        get3DModelDataService.get3DModel(imageFileId)), HttpStatus.OK);
+                        new isModelExistDto(true,get3DModelDataService.get3DModel(imageFileId))), HttpStatus.OK);
             }
             else{ //Image Processing이 진행중이라면
-                return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.CREATE_3DMODEL_INPROGRESS), HttpStatus.OK);
+                return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.CREATE_3DMODEL_INPROGRESS,
+                        new isModelExistDto(false)), HttpStatus.OK);
             }
         }
         catch (Exception ex){

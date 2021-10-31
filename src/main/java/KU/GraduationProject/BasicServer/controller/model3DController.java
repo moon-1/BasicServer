@@ -12,10 +12,10 @@ public class model3DController {
 
     private final modelHandlingService modelHandlingService;
 
-    @PostMapping("/save/model")
-    public ResponseEntity<Object> update3DModel(@RequestBody model3DDto model3DDto){
-        return modelHandlingService.save3DModel(model3DDto);
-    }
+//    @PostMapping("/save/model")
+//    public ResponseEntity<Object> update3DModel(@RequestBody model3DDto model3DDto){
+//        return modelHandlingService.save3DModel(model3DDto);
+//    }
 
     @GetMapping("/check/{id}/exist")
     public ResponseEntity<Object> checkIs3DModelExist(@PathVariable Long id){

@@ -1,4 +1,4 @@
-package KU.GraduationProject.BasicServer.dto.projectDto;
+package KU.GraduationProject.BasicServer.dto.modelDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,10 @@ import lombok.Setter;
 @Builder
 public class wallPlotLengthDto {
 
-    private Long imageFileId;
+    private int imageFileId;
 
-    private double horizontal;
+    private int horizontal;
 
-    private double vertical;
+    private int vertical;
 
 }

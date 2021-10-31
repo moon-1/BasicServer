@@ -44,9 +44,6 @@ public class imageFileHandlingService {
 
     private static final Logger log = LoggerFactory.getLogger(imageFileHandlingService.class);
 
-    @Value("${file.upload-dir}")
-    public String localDirectoryPath;
-
     @Value("${cloud.aws.s3.directoryPath}")
     public String directoryPath;
 
@@ -114,7 +111,7 @@ public class imageFileHandlingService {
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(localDirectoryPath + "/" + file.getOriginalFilename());
+        File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
         if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
             try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
                 fos.write(file.getBytes());
@@ -143,43 +140,6 @@ public class imageFileHandlingService {
         }
 
     }
-
-//    public ResponseEntity<Object> storeFile(MultipartFile file){
-//
-//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//
-//        try{
-//            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-//            Files.copy(file.getInputStream(),targetLocation,StandardCopyOption.REPLACE_EXISTING);
-//
-//            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                    .path("/post")
-//                    .path("/downloadFile/")
-//                    .path(fileName)
-//                    .toUriString();
-//
-//            var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
-//
-//            imageFile imageFile = new imageFile();
-//            imageFile.setFileName(fileName);
-//            imageFile.setFileDownloadUri(fileDownloadUri);
-//            imageFile.setFileType(file.getContentType());
-//            imageFile.setSize(file.getSize());
-//            imageFile.setUser(userInfo.get());
-//
-//            imageFileRepository.save(imageFile);
-//
-//            return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.UPLOAD_SUCCESS,
-//                    new imageFileDto(fileName,fileDownloadUri,file.getContentType(),file.getSize(),
-//                            imageFileRepository.findByFileName(fileName).get().getImageFileId())
-//            ), HttpStatus.OK);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.UPLOAD_FAIL,
-//                    e.getMessage()), HttpStatus.OK);
-//        }
-//    }
 
     public ResponseEntity<Object> downloadFiles(Long id){
         try {

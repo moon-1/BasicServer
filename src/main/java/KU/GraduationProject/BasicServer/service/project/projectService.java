@@ -1,10 +1,13 @@
 package KU.GraduationProject.BasicServer.service.project;
 
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
+import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
 import KU.GraduationProject.BasicServer.domain.entity.project.project;
 import KU.GraduationProject.BasicServer.domain.repository.*;
 import KU.GraduationProject.BasicServer.dto.createdProjectDto;
+import KU.GraduationProject.BasicServer.dto.modelDto.isModelExistProjectDto;
+import KU.GraduationProject.BasicServer.dto.modelDto.lengthDto;
 import KU.GraduationProject.BasicServer.dto.projectDto.*;
 import KU.GraduationProject.BasicServer.dto.response.defaultResult;
 import KU.GraduationProject.BasicServer.dto.response.responseMessage;
@@ -43,6 +46,9 @@ public class projectService {
     private userRepository userRepository;
 
     @Autowired
+    private furnitureRepository furnitureRepository;
+
+    @Autowired
     private getImageProcessingDataService getImageProcessingDataService;
 
     @Autowired
@@ -60,21 +66,21 @@ public class projectService {
                 return new ResponseEntity(defaultResult.res(statusCode.FORBIDDEN, responseMessage.FORBIDDEN_IMAGE, "Image file id :"+ imageFile.getImageFileId()),
                         HttpStatus.OK);
             }
-            createdProjectDto responseDto;
+            isModelExistProjectDto isModelExistProjectDto = new isModelExistProjectDto();
             Date realTime = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
             //이미 모델링한 이미지일 경우
             if(contourRepository.existsByImageFile_ImageFileId(imageFile.getImageFileId())){
-                responseDto = new createdProjectDto(newProjectDto.getName(),realTime,get3DModelDataService.get3DModel(imageFile.getImageFileId()));
+                isModelExistProjectDto.setModelExist(true);
+                isModelExistProjectDto.setCreatedProjectDto(new createdProjectDto(newProjectDto.getName(),realTime,get3DModelDataService.get3DModel(imageFile.getImageFileId())));
             }else{
-
+                isModelExistProjectDto.setModelExist(false);
                 //get ImageProcessing
                 getImageProcessingDataService.getCoordinate(newProjectDto.getImageFileId());
 
                 //get AIProcessing
                 requestAIProcessingDataService.requestWallPlotLength(newProjectDto.getImageFileId());
-
-                responseDto = new createdProjectDto(newProjectDto.getName(),realTime,"start 3D modeling...");
+                isModelExistProjectDto.setCreatedProjectDto(new createdProjectDto(newProjectDto.getName(),realTime,"start 3D modeling..."));
             }
 
             project project = KU.GraduationProject.BasicServer.domain.entity.project.project.builder()
@@ -84,10 +90,10 @@ public class projectService {
                     .user(userInfo.get())
                     .build();
 
-            responseDto.setProjectId(projectRepository.save(project).getProjectId());
+            isModelExistProjectDto.getCreatedProjectDto().setProjectId(projectRepository.save(project).getProjectId());
 
             return new ResponseEntity(defaultResult.res(statusCode.OK,
-                    responseMessage.CREATED_PROJECT,responseDto), HttpStatus.OK);
+                    responseMessage.CREATED_PROJECT, isModelExistProjectDto), HttpStatus.OK);
 
         }catch(Exception ex){
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
@@ -95,31 +101,53 @@ public class projectService {
         }
     }
 
-//    private openProjectDto get3DModel(Long imageFileId){
-//        openProjectDto openProjectDto = new openProjectDto();
-//        imageFile imageFile = imageFileRepository.getById(imageFileId);
-//        openProjectDto.setLengthDto(new lengthDto(imageFile.getHorizontal(),imageFile.getVertical()));
-//        openProjectDto.setWall(get3DModelDataService.makeWallDto(imageFileId));
-//
-//        return openProjectDto;
-//    }
-
     public ResponseEntity<Object> openProject(Long projectId){
         try{
             project project = projectRepository.findById(projectId).get();
-            openProjectDto openProjectDto = new openProjectDto();
-
-            openProjectDto.setLengthDto(new lengthDto(10.0,10.0));
-            openProjectDto.setWall(get3DModelDataService.makeWallDto(project.getImageFile().getImageFileId()));
-            openProjectDto.setFurnitures(get3DModelDataService.makeFurnitureDto(projectId));
+            projectDto projectDto = new projectDto();
+            imageFile imageFile = project.getImageFile();
+            projectDto.setLengthDto(new lengthDto(imageFile.getHorizontal(),imageFile.getVertical()));
+            projectDto.setWall(get3DModelDataService.makeWallDto(project.getImageFile().getImageFileId()));
+            projectDto.setFurnitures(get3DModelDataService.makeFurnitureDto(projectId));
 
             return new ResponseEntity(defaultResult.res(statusCode.OK,
-                    responseMessage.OPEN_PROJECT,openProjectDto), HttpStatus.OK);
+                    responseMessage.OPEN_PROJECT, projectDto), HttpStatus.OK);
         }
         catch(Exception ex){
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
                     responseMessage.INTERNAL_SERVER_ERROR,ex.getMessage()), HttpStatus.OK);
         }
+    }
+
+    public ResponseEntity<Object> saveProject(saveProjectDto saveProjectDto){
+        try{
+            List<furniture> furnitureList = furnitureRepository.findAllByProject_ProjectId(saveProjectDto.getProjectId());
+            for(furniture furniture : furnitureList){
+                furnitureRepository.deleteById(furniture.getFurnitureId());
+            }
+            project project = projectRepository.findById(saveProjectDto.getProjectId()).get();
+            for(furnitureDto furniture : saveProjectDto.getFurnitures()){
+//                if(furnitureRepository.existsByProject_ProjectIdAndName(project.getProjectId(),furniture.getName())){
+//                    furniture originFurniture = furnitureRepository.findByProject_ProjectIdAndName
+//                            (project.getProjectId(),furniture.getName()).get();
+//                    originFurniture.setX(furniture.getX());
+//                    originFurniture.setY(furniture.getY());
+//                    originFurniture.setProject(project);
+//                    furnitureRepository.save(originFurniture);
+//                }
+                {
+                    furnitureRepository.save(new furniture(furniture.getName(),furniture.getX(),furniture.getY(),project));
+                }
+            }
+            return new ResponseEntity(defaultResult.res(statusCode.OK,
+                    responseMessage.SAVE_PROJECT), HttpStatus.OK);
+        }
+        catch(Exception ex){
+            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
+                    responseMessage.INTERNAL_SERVER_ERROR,ex.getMessage()), HttpStatus.OK);
+        }
+
+
     }
 
     public ResponseEntity<Object> showProjectList(){

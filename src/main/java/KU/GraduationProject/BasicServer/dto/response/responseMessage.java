@@ -33,6 +33,7 @@ public class responseMessage {
 
     //project api
     public static final String CREATED_PROJECT = "프로젝트 생성 성공";
+    public static final String SAVE_PROJECT = "프로젝트 저장 성공";
     public static final String SHOW_PROJECT_LIST = "프로젝트 목록 조회 성공";
     public static final String FORBIDDEN_PROJECT = "접근 권한이 없는 프로젝트입니다.";
     public static final String DELETE_PROJECT = "프로젝트 삭제 성공";

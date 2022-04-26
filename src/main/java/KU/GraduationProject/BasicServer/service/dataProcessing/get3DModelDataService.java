@@ -71,7 +71,7 @@ public class get3DModelDataService {
             furnitureDto furnitureDto = new furnitureDto();
             furnitureDto.setName(furniture.getName());
             furnitureDto.setX(furniture.getX());
-            furnitureDto.setY(furnitureDto.getY());
+            furnitureDto.setY(furniture.getY());
             furnitureDtoList.add(furnitureDto);
         }
         return furnitureDtoList;

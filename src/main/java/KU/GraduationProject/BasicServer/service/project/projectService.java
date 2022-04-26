@@ -1,5 +1,6 @@
 package KU.GraduationProject.BasicServer.service.project;
 
+import KU.GraduationProject.BasicServer.domain.entity.account.neighbor;
 import KU.GraduationProject.BasicServer.domain.entity.account.user;
 import KU.GraduationProject.BasicServer.domain.entity.furnitures.furniture;
 import KU.GraduationProject.BasicServer.domain.entity.project.imageFile;
@@ -46,6 +47,9 @@ public class projectService {
     private userRepository userRepository;
 
     @Autowired
+    private neighborRepository neighborRepository;
+
+    @Autowired
     private furnitureRepository furnitureRepository;
 
     @Autowired
@@ -75,6 +79,7 @@ public class projectService {
                 isModelExistProjectDto.setCreatedProjectDto(new createdProjectDto(newProjectDto.getName(),realTime,get3DModelDataService.get3DModel(imageFile.getImageFileId())));
             }else{
                 isModelExistProjectDto.setModelExist(false);
+
                 //get ImageProcessing
                 getImageProcessingDataService.getCoordinate(newProjectDto.getImageFileId());
 
@@ -87,6 +92,7 @@ public class projectService {
                     .date(realTime)
                     .name(newProjectDto.getName())
                     .imageFile(imageFile)
+                    .isVisible(false)
                     .user(userInfo.get())
                     .build();
 
@@ -127,17 +133,7 @@ public class projectService {
             }
             project project = projectRepository.findById(saveProjectDto.getProjectId()).get();
             for(furnitureDto furniture : saveProjectDto.getFurnitures()){
-//                if(furnitureRepository.existsByProject_ProjectIdAndName(project.getProjectId(),furniture.getName())){
-//                    furniture originFurniture = furnitureRepository.findByProject_ProjectIdAndName
-//                            (project.getProjectId(),furniture.getName()).get();
-//                    originFurniture.setX(furniture.getX());
-//                    originFurniture.setY(furniture.getY());
-//                    originFurniture.setProject(project);
-//                    furnitureRepository.save(originFurniture);
-//                }
-                {
                     furnitureRepository.save(new furniture(furniture.getName(),furniture.getX(),furniture.getY(),project));
-                }
             }
             return new ResponseEntity(defaultResult.res(statusCode.OK,
                     responseMessage.SAVE_PROJECT), HttpStatus.OK);
@@ -182,6 +178,49 @@ public class projectService {
             projectRepository.deleteById(id);
             return new ResponseEntity(defaultResult.res(statusCode.OK,
                     responseMessage.DELETE_PROJECT, "project ID [" + id + "] is deleted."), HttpStatus.OK);
+        }
+        catch(Exception ex){
+            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
+                    responseMessage.INTERNAL_SERVER_ERROR,ex.getMessage()), HttpStatus.OK);
+        }
+    }
+
+    public ResponseEntity<Object> showNeighborProjectList(Long neighborId){
+        try{
+            neighbor neighbor = neighborRepository.getById(neighborId);
+            List<project> projects = projectRepository.findAllByUser_UserId(neighbor.getUser().getUserId());
+            List<projectListDto> projectListDto = new ArrayList<>();
+            for(project project : projects){
+                if(project.isVisible()){
+                    projectListDto.add(new projectListDto(project.getProjectId(),
+                            project.getName(),
+                            project.getDate(),
+                            project.getImageFile().getFileDownloadUri(),
+                            project.getImageFile().getImageFileId()));
+                }
+            }
+            return new ResponseEntity(defaultResult.res(statusCode.OK,
+                    responseMessage.SHOW_PROJECT_LIST,projectListDto), HttpStatus.OK);
+        }
+        catch(Exception ex){
+            return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
+                    responseMessage.INTERNAL_SERVER_ERROR,ex.getMessage()), HttpStatus.OK);
+        }
+    }
+
+    public ResponseEntity<Object> downloadProject(Long projectId){
+        try{
+            Date realTime = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+            user user = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
+            project downloadProject = projectRepository.findById(projectId).get();
+            imageFile imageFile = imageFileRepository.save(downloadProject.getImageFile());
+            project saveProject = projectRepository.save(new project(realTime,downloadProject.getName(),user,imageFile,false));
+            List<furniture> furnitureList = furnitureRepository.findAllByProject_ProjectId(projectId);
+            for(furniture furniture : furnitureList){
+                furnitureRepository.save(new furniture(furniture.getName(),furniture.getX(),furniture.getY(),saveProject));
+            }
+            return new ResponseEntity(defaultResult.res(statusCode.OK,
+                    responseMessage.DOWNLOAD_PROJECT_SUCCESS,"[ "+downloadProject.getName() + " ] 다운로드 완료"), HttpStatus.OK);
         }
         catch(Exception ex){
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,

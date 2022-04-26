@@ -42,4 +42,14 @@ public class responseMessage {
     public static final String CREATE_3DMODEL_INPROGRESS = "3D 모델링 중..";
     public static final String CREATE_3DMODEL_SUCCESS = "3D 모델 생성 성공";
 
+    //neighbor api
+    public static final String NICKNAME_SEARCH_SUCCESS = "닉네임 조회 성공";
+    public static final String NEIGHBOR_REQUEST_SUCCESS = "이웃 신청 성공";
+    public static final String SHOW_NEIGHBOR_LIST = "이웃 목록 조회";
+    public static final String APPROVE_NEIGHBOR_SUCCESS = "이웃 신청 승인";
+    public static final String DISAPPROVE_NEIGHBOR_SUCCESS = "이웃 신청 거절";
+    public static final String DELETE_NEIGHBOR = "이웃 삭제";
+
+    public static final String DOWNLOAD_PROJECT_SUCCESS = "프로젝트 다운로드 성공";
+
 }

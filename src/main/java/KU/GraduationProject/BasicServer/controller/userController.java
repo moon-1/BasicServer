@@ -43,8 +43,8 @@ public class userController {
     }
 
     @DeleteMapping("/withdrawal")
-    public ResponseEntity<Object> withdrawal(@Valid @RequestBody checkPasswordDto checkPasswordDto){
-        return userService.withdrawal(checkPasswordDto);
+    public ResponseEntity<Object> withdrawal(){
+        return userService.withdrawal();
     }
 
     @PostMapping("/authenticate")

@@ -105,6 +105,19 @@ public class userService {
         }
     }
 
+    //@Transactional
+    public ResponseEntity<Object> withdrawal() {
+        try{
+            var userInfo = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+                userRepository.delete(userInfo.get());
+                return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.DELETE_USER,
+                        "User [ " + userInfo.get().getNickname() + " ] is deleted"), HttpStatus.OK);
+        }
+        catch(Exception ex){
+            return new ResponseEntity(defaultResult.res(statusCode.BAD_REQUEST, responseMessage.INVALID_TOKEN), HttpStatus.OK);
+        }
+    }
+
     @Transactional
     public ResponseEntity<Object> checkPassword(checkPasswordDto checkPasswordDto) {
         try{

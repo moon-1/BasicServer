@@ -5,7 +5,6 @@ import KU.GraduationProject.BasicServer.dto.modelDto.wallPlotLengthDto;
 import KU.GraduationProject.BasicServer.dto.projectDto.saveProjectDto;
 import KU.GraduationProject.BasicServer.service.project.modelHandlingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,4 +50,14 @@ public class projectController {
 
     @GetMapping("/{id}/open")
     public ResponseEntity<Object> openProject(@PathVariable Long id){ return projectService.openProject(id); }
+
+    @GetMapping("/{neighborId}/findAll")
+    public ResponseEntity<Object> showNeighborProjectList(@PathVariable Long neighborId){
+        return projectService.showNeighborProjectList(neighborId);
+    }
+
+    @GetMapping("/{projectId}/download")
+    public ResponseEntity<Object> downloadProject(@PathVariable Long projectId){
+        return projectService.downloadProject(projectId);
+    }
 }

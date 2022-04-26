@@ -26,7 +26,7 @@ public class user{
     @Column(length = 100)
     private String password;
 
-    @Column(length = 50)
+    @Column(length = 50, unique=true)
     private String nickname;
 
     @Column

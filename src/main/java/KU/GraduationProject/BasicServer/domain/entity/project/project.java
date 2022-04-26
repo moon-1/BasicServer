@@ -39,15 +39,15 @@ public class project {
     @JoinColumn(name = "imageFileId")
     private imageFile imageFile;
 
-//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "projectId")
-//    private Collection<furniture> furniture;
+    @Column(nullable = false)
+    private boolean isVisible;
 
-    public project(Date date, String name,user user,imageFile imageFile){
+    public project(Date date, String name,user user,imageFile imageFile,boolean isVisible){
         this.date = date;
         this.name = name;
         this.user = user;
         this.imageFile = imageFile;
+        this.isVisible = isVisible;
     }
 
 }

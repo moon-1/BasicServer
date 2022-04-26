@@ -64,12 +64,14 @@ public class tokenProvider implements InitializingBean {
     }
 
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts
+        Claims claims =
+                Jwts
                 .parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        //Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -83,6 +85,7 @@ public class tokenProvider implements InitializingBean {
 
     public boolean validateToken(String token) {
         try {
+            //Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {

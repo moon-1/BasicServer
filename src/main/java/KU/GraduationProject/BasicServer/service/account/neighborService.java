@@ -46,7 +46,17 @@ public class neighborService {
     public ResponseEntity<Object> showNeighborList(){
         List<neighborDto> neighborDtoList = new ArrayList<>();
         user requestUser = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
-        List<neighbor> neighborList = neighborRepository.findAllByUser_UserId(requestUser.getUserId());
+        List<neighbor> neighborList = neighborRepository.findAllByUser_UserIdAndIsApprove(requestUser.getUserId(),true);
+        for(neighbor neighbor : neighborList){
+            neighborDtoList.add(new neighborDto(neighbor.getNickname(),neighbor.getNeighborId(),neighbor.getUser().getUserId(),neighbor.isApprove()));
+        }
+        return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.SHOW_NEIGHBOR_LIST,neighborDtoList), HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> showNeighborApplicationList(){
+        List<neighborDto> neighborDtoList = new ArrayList<>();
+        user requestUser = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
+        List<neighbor> neighborList = neighborRepository.findAllByUser_UserIdAndIsApprove(requestUser.getUserId(),false);
         for(neighbor neighbor : neighborList){
             neighborDtoList.add(new neighborDto(neighbor.getNickname(),neighbor.getNeighborId(),neighbor.getUser().getUserId(),neighbor.isApprove()));
         }

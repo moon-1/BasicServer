@@ -19,9 +19,14 @@ public class neighborController {
         return neighborService.searchNeighbor(nickname);
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/list")
     public ResponseEntity<Object> showNeighborList(){
         return neighborService.showNeighborList();
+    }
+
+    @GetMapping("/application/list")
+    public ResponseEntity<Object>  showNeighborApplicationList(){
+        return neighborService.showNeighborApplicationList();
     }
 
     @PostMapping("/request")

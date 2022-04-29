@@ -49,6 +49,7 @@ public class responseMessage {
     public static final String APPROVE_NEIGHBOR_SUCCESS = "이웃 신청 승인";
     public static final String DISAPPROVE_NEIGHBOR_SUCCESS = "이웃 신청 거절";
     public static final String DELETE_NEIGHBOR = "이웃 삭제";
+    public static final String NEIGHBOR_REQUEST_ALREADY_EXISTS = "이미 존재하는 요청입니다.";
 
     public static final String DOWNLOAD_PROJECT_SUCCESS = "프로젝트 다운로드 성공";
 

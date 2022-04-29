@@ -19,4 +19,6 @@ public interface neighborRepository extends JpaRepository<neighbor,Long> {
     void setNeighborIsApprove(@Param("neighborId") Long neighborId, @Param("isApprove") boolean isApprove);
 
     List<neighbor> findAllByUser_UserIdAndIsApprove(Long userId, boolean isApprove);
+
+    boolean existsByNicknameAndUser_UserId(String nickname,Long userId);
 }

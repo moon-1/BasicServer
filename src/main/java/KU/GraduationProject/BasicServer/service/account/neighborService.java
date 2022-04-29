@@ -34,10 +34,12 @@ public class neighborService {
 
     public ResponseEntity<Object> searchNeighbor(String nickname){
 
+        user requestUser = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
         List<user> userList = userRepository.findByNicknameContaining(nickname);
         List<nicknameDto> nicknameList = new ArrayList<>();
 
         for(user user : userList){
+            if(requestUser.getNickname().equals(nickname)) continue;
             nicknameList.add(new nicknameDto(user.getNickname(),user.getUserId()));
         }
         return new ResponseEntity(defaultResult.res(statusCode.OK, responseMessage.NICKNAME_SEARCH_SUCCESS, nicknameList), HttpStatus.OK);
@@ -67,6 +69,10 @@ public class neighborService {
 
         try{
             user requestUser = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
+            if(neighborRepository.existsByNicknameAndUser_UserId(requestUser.getNickname(),nicknameDto.getUserId())){
+                return new ResponseEntity(defaultResult.res(statusCode.OK,responseMessage.NEIGHBOR_REQUEST_ALREADY_EXISTS,
+                        "A request was already exists"),HttpStatus.OK);
+            }
             neighborRepository.save(new neighbor(requestUser.getNickname(),false,userRepository.getById(nicknameDto.getUserId())));
 
             return new ResponseEntity(defaultResult.res(statusCode.OK,responseMessage.NEIGHBOR_REQUEST_SUCCESS,
@@ -90,7 +96,7 @@ public class neighborService {
                         HttpStatus.OK);
             }
             neighborRepository.deleteById(neighborId);
-            return new ResponseEntity(defaultResult.res(statusCode.OK,responseMessage.DELETE_NEIGHBOR),HttpStatus.OK);
+            return new ResponseEntity(defaultResult.res(statusCode.OK,responseMessage.DELETE_NEIGHBOR,"성공적으로 삭제되었습니다."),HttpStatus.OK);
         }
         catch(Exception ex){
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
@@ -102,8 +108,13 @@ public class neighborService {
     public ResponseEntity<Object> approveNeighbor(neighborDto neighborDto){
         try{
             user user = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
+            List<neighborDto> neighborDtoList = new ArrayList<>();
             neighborRepository.setNeighborIsApprove(neighborDto.getNeighborId(),true);
-            return new ResponseEntity(defaultResult.res(statusCode.OK,responseMessage.APPROVE_NEIGHBOR_SUCCESS),HttpStatus.OK);
+            List<neighbor> neighborList = neighborRepository.findAllByUser_UserIdAndIsApprove(user.getUserId(),false);
+            for(neighbor neighbor : neighborList){
+                neighborDtoList.add(new neighborDto(neighbor.getNickname(),neighbor.getNeighborId(),neighbor.getUser().getUserId(),neighbor.isApprove()));
+            }
+            return new ResponseEntity(defaultResult.res(statusCode.OK,responseMessage.APPROVE_NEIGHBOR_SUCCESS,neighborDtoList),HttpStatus.OK);
         }
         catch(Exception ex){
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,

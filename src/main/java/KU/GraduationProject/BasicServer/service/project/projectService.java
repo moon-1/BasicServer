@@ -92,7 +92,7 @@ public class projectService {
                     .date(realTime)
                     .name(newProjectDto.getName())
                     .imageFile(imageFile)
-                    .isVisible(false)
+                    .isVisible(true)
                     .user(userInfo.get())
                     .build();
 
@@ -142,8 +142,6 @@ public class projectService {
             return new ResponseEntity(defaultResult.res(statusCode.INTERNAL_SERVER_ERROR,
                     responseMessage.INTERNAL_SERVER_ERROR,ex.getMessage()), HttpStatus.OK);
         }
-
-
     }
 
     public ResponseEntity<Object> showProjectList(){
@@ -214,7 +212,7 @@ public class projectService {
             user user = securityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
             project downloadProject = projectRepository.findById(projectId).get();
             imageFile imageFile = imageFileRepository.save(downloadProject.getImageFile());
-            project saveProject = projectRepository.save(new project(realTime,downloadProject.getName(),user,imageFile,false));
+            project saveProject = projectRepository.save(new project(realTime,downloadProject.getName(),user,imageFile,true));
             List<furniture> furnitureList = furnitureRepository.findAllByProject_ProjectId(projectId);
             for(furniture furniture : furnitureList){
                 furnitureRepository.save(new furniture(furniture.getName(),furniture.getX(),furniture.getY(),saveProject));

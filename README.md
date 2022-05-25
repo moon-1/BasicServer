@@ -1,16 +1,8 @@
-# BasicServer
+# AR 인테리어 시뮬레이션 프로그램 Main Server
+인테리어 도면의 인공지능 모델링을 통해 만들어진 실내 공간에서 AR로 체험하며 가구를 배치해볼 수 있는 인테리어 시뮬레이션 서비스
 
-기능을 더 추가하고 로직을 분리할 예정인 기본 서버입니다.
+### Program Architecture
+<img width="464" alt="image" src="https://user-images.githubusercontent.com/52816832/170185497-3a432b97-459d-4911-947a-4a4aec32ecba.png">
 
-
-
-
-### 빌드 시 gradle관련 오류가 날 경우
-
-* Preferences -> Build, Execution, Deployment -> Build Tools -> Gradle
-
- * Build and run using: Gradle -> IntelliJ IDEA
-
- * Run tests using: Gradle -> IntelliJ IDEA
-
-> *윈도우 사용자* File -> Setting
+### Application Image
+<img width="825" alt="image" src="https://user-images.githubusercontent.com/52816832/170185784-a9b9070c-d1e8-432f-a736-3db96ed57a0a.png">
